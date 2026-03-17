@@ -10,7 +10,7 @@
     "typecheck": "echo 'No TypeScript files to check'"
   },
   "dependencies": {
-    "@react-email/components": "1.0.8",
+    "@react-email/components": "1.0.10",
     "@react-email/preview-server": "5.2.9",
     "@repo/email": "workspace:*",
     "react": "19.2.4",
