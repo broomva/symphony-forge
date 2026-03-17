@@ -1,0 +1,59 @@
+# .control/commands.yaml — Canonical commands for Symphony Cloud
+# Each command maps to a harness script in scripts/harness/.
+
+commands:
+  smoke:
+    description: "Quick validation: install, check, build the main app"
+    script: "scripts/harness/smoke.sh"
+    timeout: 120
+    usage: "make -f Makefile.control smoke"
+    when: "Before starting work, after pulling changes"
+
+  check:
+    description: "Lint (biome via ultracite) + typecheck (tsc --noEmit)"
+    script: "scripts/harness/check.sh"
+    timeout: 60
+    usage: "make -f Makefile.control check"
+    when: "Before committing, after any code change"
+
+  test:
+    description: "Run vitest test suite"
+    script: "bun run test"
+    timeout: 180
+    usage: "make -f Makefile.control test"
+    when: "Before pushing, after logic changes"
+
+  build:
+    description: "Full Turborepo build (runs tests first via turbo dependency)"
+    script: "bun run build"
+    timeout: 300
+    usage: "make -f Makefile.control build"
+    when: "Before deploy, to verify everything compiles"
+
+  ci:
+    description: "Full CI pipeline: check + test + build"
+    script: "scripts/harness/ci.sh"
+    timeout: 600
+    usage: "make -f Makefile.control ci"
+    when: "Simulating the full CI pipeline locally"
+
+  docs-check:
+    description: "Verify documentation freshness and index coverage"
+    script: "scripts/harness/check-docs-freshness.sh"
+    timeout: 10
+    usage: "make -f Makefile.control docs-check"
+    when: "After modifying any file in docs/"
+
+  deploy:
+    description: "Deploy to Vercel (requires VERCEL_TOKEN)"
+    script: "vercel --prod"
+    timeout: 300
+    usage: "make -f Makefile.control deploy"
+    when: "After all CI checks pass and PR is approved"
+
+  migrate:
+    description: "Run Prisma format, generate, and push schema"
+    script: "cd packages/database && bunx prisma format && bunx prisma generate && bunx prisma db push"
+    timeout: 60
+    usage: "bun run db:push"
+    when: "After schema.prisma changes"

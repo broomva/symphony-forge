@@ -1,17 +1,3 @@
-import { database } from "@repo/database";
-
-export const GET = async () => {
-  const newPage = await database.page.create({
-    data: {
-      name: "cron-temp",
-    },
-  });
-
-  await database.page.delete({
-    where: {
-      id: newPage.id,
-    },
-  });
-
+export const GET = () => {
   return new Response("OK", { status: 200 });
 };

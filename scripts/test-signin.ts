@@ -4,11 +4,12 @@
  *
  * Usage: bun run scripts/test-signin.ts
  */
-import { config } from "dotenv";
-import { resolve } from "path";
-import { createClerkClient } from "@clerk/backend";
 
-config({ path: resolve(__dirname, "../apps/app/.env.local") });
+import { resolve } from "node:path";
+import { createClerkClient } from "@clerk/backend";
+import { config } from "dotenv";
+
+config({ path: resolve(import.meta.dirname, "../apps/app/.env.local") });
 
 const secretKey = process.env.CLERK_SECRET_KEY;
 if (!secretKey) {
@@ -41,11 +42,9 @@ async function main() {
 
   console.log("\n--- Sign-in Token ---");
   console.log(`Token: ${signInToken.token}`);
+  console.log(`URL: ${signInToken.url}`);
   console.log(
-    `URL: ${signInToken.url}`
-  );
-  console.log(
-    `\nOpen this URL in the browser to sign in without password/OTP:`
+    "\nOpen this URL in the browser to sign in without password/OTP:"
   );
   console.log(signInToken.url);
 }

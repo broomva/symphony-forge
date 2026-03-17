@@ -1,0 +1,67 @@
+# .control/policy.yaml — Policy gates for Symphony Cloud
+# Each policy defines risk level, required checks, and approval conditions.
+
+policies:
+  database-migration:
+    description: "Any change to packages/database/prisma/schema.prisma"
+    risk: high
+    triggers:
+      - "packages/database/prisma/schema.prisma"
+      - "packages/database/prisma/migrations/**"
+    requires:
+      - adr: "Must have an ADR in docs/decisions/ explaining the schema change"
+      - tests: "Migration must include or update relevant tests"
+      - backup: "Ensure a database backup exists before applying to production"
+      - review: "Requires at least one reviewer with database domain knowledge"
+    rollback: "Use prisma migrate resolve to mark failed migrations"
+
+  dependency-update:
+    description: "Adding or updating dependencies in any package.json"
+    risk: medium
+    triggers:
+      - "**/package.json"
+      - "bun.lock"
+    requires:
+      - audit: "Run bun audit to check for vulnerabilities"
+      - build: "Full build must pass after dependency change"
+      - test: "All tests must pass"
+    notes: "Prefer exact versions. Document why new dependencies are needed."
+
+  env-variable-change:
+    description: "Adding or modifying environment variables"
+    risk: high
+    triggers:
+      - "**/.env.example"
+      - "**/.env.local.example"
+      - "**/env.ts"
+      - "**/keys.ts"
+    requires:
+      - docs: "Update docs/schemas/env-variables.md with the new variable"
+      - secrets: "Never commit actual secret values"
+      - validation: "Add Zod validation in the relevant env.ts file"
+    notes: "All env vars must be documented and validated at startup."
+
+  new-package:
+    description: "Creating a new workspace package under packages/ or apps/"
+    risk: medium
+    triggers:
+      - "packages/*/package.json"
+      - "apps/*/package.json"
+    requires:
+      - topology: "Update .control/topology.yaml with the new package"
+      - docs: "Add architecture doc in docs/architecture/"
+      - index: "Update docs/_index.md to reference the new doc"
+    notes: "Follow existing package conventions. Use @repo/ scope."
+
+  production-deploy:
+    description: "Deploying to production (Vercel)"
+    risk: critical
+    triggers:
+      - manual
+    requires:
+      - ci: "All CI checks must pass (lint, typecheck, test, build)"
+      - review: "At least one approved review on the PR"
+      - docs: "All documentation must be up to date"
+      - policy: "All policy gates for included changes must be satisfied"
+      - staging: "Changes should be verified in preview deployment first"
+    rollback: "Use Vercel instant rollback to previous deployment"

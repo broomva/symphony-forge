@@ -92,12 +92,12 @@ const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Symphony Cloud",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
     {
-      name: "Acme Corp.",
+      name: "Symphony Team",
       logo: AudioWaveform,
       plan: "Startup",
     },

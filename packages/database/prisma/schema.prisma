@@ -1,5 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Symphony Cloud — Database Schema
+// Prisma 7.x with Neon PostgreSQL (serverless adapter)
+// All tenant-scoped models use organizationId (Clerk org ID)
 
 generator client {
   provider = "prisma-client"
@@ -11,9 +12,296 @@ datasource db {
   relationMode = "prisma"
 }
 
-// This is a stub model.
-// Delete it and add your own Prisma models.
-model Page {
-  id   Int    @id @default(autoincrement())
-  name String
+// ─── Enums ──────────────────────────────────────────────────
+
+enum InstanceStatus {
+  provisioning
+  online
+  offline
+  degraded
+  decommissioned
+}
+
+enum RunStatus {
+  pending
+  running
+  retrying
+  succeeded
+  failed
+  timed_out
+  cancelled
+}
+
+enum SessionStatus {
+  preparing_workspace
+  building_prompt
+  launching_agent
+  initializing_session
+  streaming_turn
+  finishing
+  succeeded
+  failed
+  timed_out
+  stalled
+  cancelled
+}
+
+enum ApiKeyService {
+  linear
+  github
+  openai
+  anthropic
+  custom
+}
+
+enum AuditAction {
+  instance_created
+  instance_updated
+  instance_deleted
+  workflow_created
+  workflow_updated
+  workflow_deployed
+  run_started
+  run_completed
+  api_key_created
+  api_key_rotated
+  api_key_deleted
+  settings_updated
+  member_invited
+  member_removed
+}
+
+enum BillingPlan {
+  starter
+  team
+  enterprise
+}
+
+// ─── Symphony Instances ─────────────────────────────────────
+
+model SymphonyInstance {
+  id              String         @id @default(cuid())
+  organizationId  String
+  name            String
+  host            String
+  port            Int
+  apiToken        String?        /// Encrypted bearer token for engine auth
+  status          InstanceStatus @default(provisioning)
+  version         String?        /// Engine version string
+  lastHealthCheck DateTime?
+  metadata        Json?          /// Arbitrary config (poll_interval, max_agents, etc.)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  deletedAt       DateTime?
+
+  runs        Run[]
+  deployments WorkflowDeployment[]
+
+  @@index([organizationId])
+  @@index([organizationId, status])
+  @@map("symphony_instances")
+}
+
+// ─── Workflows ──────────────────────────────────────────────
+
+model Workflow {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  content        String   /// WORKFLOW.md content (YAML + Liquid)
+  version        Int      @default(1)
+  isActive       Boolean  @default(true)
+  createdBy      String   /// Clerk user ID
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime?
+
+  versions    WorkflowVersion[]
+  deployments WorkflowDeployment[]
+
+  @@index([organizationId])
+  @@index([organizationId, isActive])
+  @@map("workflows")
+}
+
+model WorkflowVersion {
+  id         String   @id @default(cuid())
+  workflowId String
+  version    Int
+  content    String   /// Snapshot of WORKFLOW.md at this version
+  changeNote String?
+  createdBy  String   /// Clerk user ID
+  createdAt  DateTime @default(now())
+
+  workflow Workflow @relation(fields: [workflowId], references: [id])
+
+  @@index([workflowId])
+  @@index([workflowId, version])
+  @@map("workflow_versions")
+}
+
+model WorkflowDeployment {
+  id         String   @id @default(cuid())
+  workflowId String
+  instanceId String
+  version    Int      /// Version number deployed
+  deployedBy String   /// Clerk user ID
+  deployedAt DateTime @default(now())
+  success    Boolean  @default(true)
+  error      String?
+
+  workflow Workflow         @relation(fields: [workflowId], references: [id])
+  instance SymphonyInstance @relation(fields: [instanceId], references: [id])
+
+  @@index([workflowId])
+  @@index([instanceId])
+  @@map("workflow_deployments")
+}
+
+// ─── Runs and Sessions ──────────────────────────────────────
+
+model Run {
+  id              String    @id @default(cuid())
+  organizationId  String
+  instanceId      String
+  issueId         String    /// Tracker issue ID (e.g., Linear ID)
+  issueIdentifier String    /// Human-readable (e.g., "ABC-123")
+  issueTitle      String?
+  issueUrl        String?
+  status          RunStatus @default(pending)
+  attempt         Int       @default(1)
+  inputTokens     BigInt    @default(0)
+  outputTokens    BigInt    @default(0)
+  totalTokens     BigInt    @default(0)
+  startedAt       DateTime  @default(now())
+  completedAt     DateTime?
+  durationMs      Int?      /// Computed: completedAt - startedAt
+  error           String?
+  metadata        Json?     /// Extra info: branch_name, labels, etc.
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  instance SymphonyInstance @relation(fields: [instanceId], references: [id])
+  sessions Session[]
+
+  @@index([organizationId])
+  @@index([organizationId, status])
+  @@index([organizationId, issueIdentifier])
+  @@index([instanceId])
+  @@index([issueId])
+  @@index([startedAt])
+  @@map("runs")
+}
+
+model Session {
+  id           String        @id @default(cuid())
+  runId        String
+  sessionId    String        /// Engine session ID (<thread_id>-<turn_id>)
+  threadId     String?
+  turnId       String?
+  status       SessionStatus @default(preparing_workspace)
+  turnCount    Int           @default(0)
+  inputTokens  BigInt        @default(0)
+  outputTokens BigInt        @default(0)
+  totalTokens  BigInt        @default(0)
+  startedAt    DateTime      @default(now())
+  completedAt  DateTime?
+  lastEventAt  DateTime?
+  lastEvent    String?
+  lastMessage  String?
+  error        String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  run Run @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+  @@index([sessionId])
+  @@map("sessions")
+}
+
+// ─── API Keys (Tenant-Scoped Secrets) ───────────────────────
+
+model ApiKey {
+  id             String        @id @default(cuid())
+  organizationId String
+  service        ApiKeyService
+  name           String        /// Display name (e.g., "Production Linear Key")
+  encryptedKey   String        /// AES-256-GCM encrypted value
+  keyPrefix      String?       /// First 8 chars for identification (e.g., "lin_live")
+  lastUsedAt     DateTime?
+  expiresAt      DateTime?
+  createdBy      String        /// Clerk user ID
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+
+  @@index([organizationId])
+  @@index([organizationId, service])
+  @@map("api_keys")
+}
+
+// ─── Usage Tracking ─────────────────────────────────────────
+
+model UsageRecord {
+  id                  String   @id @default(cuid())
+  organizationId      String
+  periodStart         DateTime /// Billing period start
+  periodEnd           DateTime /// Billing period end
+  inputTokens         BigInt   @default(0)
+  outputTokens        BigInt   @default(0)
+  totalTokens         BigInt   @default(0)
+  agentSeconds        Float    @default(0) /// Total agent runtime in seconds
+  runCount            Int      @default(0)
+  peakConcurrent      Int      @default(0) /// Max concurrent agents during period
+  reportedToStripe    Boolean  @default(false)
+  stripeUsageRecordId String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([organizationId, periodStart, periodEnd])
+  @@index([organizationId])
+  @@index([organizationId, periodStart])
+  @@index([reportedToStripe])
+  @@map("usage_records")
+}
+
+// ─── Audit Log ──────────────────────────────────────────────
+
+model AuditLog {
+  id             String      @id @default(cuid())
+  organizationId String
+  userId         String      /// Clerk user ID
+  action         AuditAction
+  resourceType   String      /// e.g., "instance", "workflow", "run"
+  resourceId     String?     /// ID of the affected resource
+  metadata       Json?       /// Action-specific details (before/after, etc.)
+  ipAddress      String?
+  userAgent      String?
+  createdAt      DateTime    @default(now())
+
+  @@index([organizationId])
+  @@index([organizationId, action])
+  @@index([organizationId, createdAt])
+  @@index([userId])
+  @@map("audit_logs")
+}
+
+// ─── Organization Settings ──────────────────────────────────
+
+model OrganizationSettings {
+  id                   String      @id @default(cuid())
+  organizationId       String      @unique
+  billingPlan          BillingPlan @default(starter)
+  stripeCustomerId     String?     @unique
+  stripeSubscriptionId String?
+  maxConcurrentAgents  Int         @default(3)
+  maxInstances         Int         @default(1)
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+
+  @@index([organizationId])
+  @@index([stripeCustomerId])
+  @@map("organization_settings")
 }

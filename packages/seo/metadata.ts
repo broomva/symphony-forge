@@ -7,13 +7,13 @@ type MetadataGenerator = Omit<Metadata, "description" | "title"> & {
   image?: string;
 };
 
-const applicationName = "next-forge";
+const applicationName = "Symphony Cloud";
 const author: Metadata["authors"] = {
-  name: "Vercel",
-  url: "https://vercel.com/",
+  name: "Broomva",
+  url: "https://broomva.tech/",
 };
-const publisher = "Vercel";
-const twitterHandle = "@vercel";
+const publisher = "Broomva";
+const twitterHandle = "@broomva";
 const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 const productionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL;
 

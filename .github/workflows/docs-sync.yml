@@ -1,0 +1,26 @@
+name: Docs Sync
+
+on:
+  push:
+    paths:
+      - "docs/**"
+    branches: [main]
+  pull_request:
+    paths:
+      - "docs/**"
+    branches: [main]
+
+jobs:
+  validate-docs:
+    name: Validate Documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check docs freshness
+        run: bash scripts/harness/check-docs-freshness.sh
+
+      - name: Validate wikilinks
+        run: bash scripts/harness/check-wikilinks.sh

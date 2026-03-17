@@ -1,0 +1,192 @@
+# .control/topology.yaml — Repository topology map for Symphony Cloud
+# Describes all apps, packages, and their relationships.
+
+apps:
+  app:
+    path: "apps/app"
+    description: "Main dashboard application (Next.js App Router)"
+    port: 3000
+    risk: high
+    domain: dashboard
+    dependencies:
+      - "@repo/auth"
+      - "@repo/database"
+      - "@repo/design-system"
+      - "@repo/observability"
+      - "@repo/analytics"
+      - "@repo/feature-flags"
+      - "@repo/notifications"
+      - "@repo/payments"
+      - "@repo/security"
+      - "@repo/collaboration"
+
+  api:
+    path: "apps/api"
+    description: "Control plane API (Next.js Route Handlers)"
+    port: 3002
+    risk: high
+    domain: api
+    dependencies:
+      - "@repo/auth"
+      - "@repo/database"
+      - "@repo/observability"
+      - "@repo/rate-limit"
+      - "@repo/security"
+      - "@repo/webhooks"
+
+  web:
+    path: "apps/web"
+    description: "Marketing website (Next.js)"
+    port: 3001
+    risk: low
+    domain: marketing
+    dependencies:
+      - "@repo/design-system"
+      - "@repo/seo"
+      - "@repo/analytics"
+      - "@repo/cms"
+
+  docs:
+    path: "apps/docs"
+    description: "Public documentation site (Mintlify)"
+    port: 3004
+    risk: low
+    domain: docs
+    dependencies: []
+
+  email:
+    path: "apps/email"
+    description: "Email templates (React Email)"
+    port: 3003
+    risk: low
+    domain: email
+    dependencies:
+      - "@repo/email"
+
+  storybook:
+    path: "apps/storybook"
+    description: "Component library explorer (Storybook)"
+    port: 6006
+    risk: low
+    domain: design
+    dependencies:
+      - "@repo/design-system"
+
+  studio:
+    path: "apps/studio"
+    description: "Database studio (Prisma Studio)"
+    port: 5555
+    risk: medium
+    domain: database
+    dependencies:
+      - "@repo/database"
+
+packages:
+  ai:
+    path: "packages/ai"
+    description: "AI/LLM integrations"
+    domain: ai
+
+  analytics:
+    path: "packages/analytics"
+    description: "Analytics (PostHog / Vercel)"
+    domain: observability
+
+  auth:
+    path: "packages/auth"
+    description: "Authentication (Clerk)"
+    domain: auth
+
+  cms:
+    path: "packages/cms"
+    description: "Content management (BaseHub)"
+    domain: content
+
+  collaboration:
+    path: "packages/collaboration"
+    description: "Real-time collaboration (Liveblocks)"
+    domain: collaboration
+
+  database:
+    path: "packages/database"
+    description: "Prisma ORM + Neon PostgreSQL"
+    domain: database
+    risk: high
+
+  design-system:
+    path: "packages/design-system"
+    description: "UI components (shadcn/ui + Tailwind)"
+    domain: design
+
+  email:
+    path: "packages/email"
+    description: "Email sending (Resend)"
+    domain: email
+
+  feature-flags:
+    path: "packages/feature-flags"
+    description: "Feature flags (Vercel Flags)"
+    domain: infra
+
+  internationalization:
+    path: "packages/internationalization"
+    description: "i18n (next-intl)"
+    domain: infra
+
+  next-config:
+    path: "packages/next-config"
+    description: "Shared Next.js configuration"
+    domain: infra
+
+  notifications:
+    path: "packages/notifications"
+    description: "Push notifications (Knock)"
+    domain: notifications
+
+  observability:
+    path: "packages/observability"
+    description: "Logging, error tracking, monitoring (Sentry)"
+    domain: observability
+
+  payments:
+    path: "packages/payments"
+    description: "Billing (Stripe)"
+    domain: billing
+
+  rate-limit:
+    path: "packages/rate-limit"
+    description: "Rate limiting (Arcjet)"
+    domain: security
+
+  security:
+    path: "packages/security"
+    description: "Security headers and middleware"
+    domain: security
+
+  seo:
+    path: "packages/seo"
+    description: "SEO metadata and sitemap generation"
+    domain: marketing
+
+  storage:
+    path: "packages/storage"
+    description: "File storage (Vercel Blob)"
+    domain: storage
+
+  typescript-config:
+    path: "packages/typescript-config"
+    description: "Shared TypeScript configuration"
+    domain: infra
+
+  webhooks:
+    path: "packages/webhooks"
+    description: "Webhook handling (Svix)"
+    domain: api
+
+knowledge:
+  entry_point: "docs/_index.md"
+  architecture: "docs/architecture/"
+  decisions: "docs/decisions/"
+  runbooks: "docs/runbooks/"
+  api_contracts: "docs/api-contracts/"
+  schemas: "docs/schemas/"

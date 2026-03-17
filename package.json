@@ -1,9 +1,9 @@
 {
-  "name": "next-forge",
-  "version": "6.0.1",
+  "name": "symphony-cloud",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vercel/next-forge.git"
+    "url": "git+https://github.com/broomva/symphony-cloud.git"
   },
   "publishConfig": {
     "provenance": true,
@@ -30,7 +30,8 @@
     "migrate:deploy": "cd packages/database && bunx prisma generate && bunx prisma migrate deploy",
     "db:push": "cd packages/database && bunx prisma format && bunx prisma generate && bunx prisma db push",
     "clean": "git clean -xdf node_modules",
-    "release": "npm publish"
+    "release": "npm publish",
+    "prepare": "scripts/harness/install-hooks.sh"
   },
   "devDependencies": {
     "@auto-it/first-time-contributor": "^11.3.6",

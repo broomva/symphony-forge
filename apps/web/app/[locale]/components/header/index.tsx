@@ -114,16 +114,22 @@ export const Header = ({ dictionary }: HeaderProps) => {
             className="h-[18px] w-[18px] -translate-y-[0.5px] fill-current"
             fill="none"
             height="22"
-            viewBox="0 0 235 203"
+            viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <title>Vercel</title>
+            <title>Symphony Cloud</title>
             <path
-              d="M117.082 0L234.164 202.794H0L117.082 0Z"
-              fill="currentColor"
+              d="M9 18V5l12-2v13"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
             />
+            <circle cx="6" cy="18" fill="currentColor" r="3" />
+            <circle cx="18" cy="16" fill="currentColor" r="3" />
           </svg>
-          <p className="whitespace-nowrap font-semibold">next-forge</p>
+          <p className="whitespace-nowrap font-semibold">Symphony Cloud</p>
         </div>
         <div className="flex w-full justify-end gap-4">
           <Button asChild className="hidden md:inline" variant="ghost">

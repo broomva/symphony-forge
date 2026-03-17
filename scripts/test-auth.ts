@@ -6,12 +6,13 @@
  *
  * Requires CLERK_SECRET_KEY in apps/app/.env.local
  */
-import { config } from "dotenv";
-import { resolve } from "path";
+
+import { resolve } from "node:path";
 import { createClerkClient } from "@clerk/backend";
+import { config } from "dotenv";
 
 // Load env from apps/app/.env.local
-config({ path: resolve(__dirname, "../apps/app/.env.local") });
+config({ path: resolve(import.meta.dirname, "../apps/app/.env.local") });
 
 const secretKey = process.env.CLERK_SECRET_KEY;
 if (!secretKey) {
@@ -33,7 +34,7 @@ async function main() {
     emailAddress: [testEmail],
   });
 
-  let user;
+  let user: (typeof users.data)[0] | undefined;
   if (users.data.length > 0) {
     user = users.data[0];
     // Update password to the new one
@@ -52,8 +53,12 @@ async function main() {
         skipPasswordChecks: true,
       });
       console.log("Created test user:", user.id);
-    } catch (e: any) {
-      console.log("User creation error:", e.errors?.[0]?.message || e.message);
+    } catch (e: unknown) {
+      const err = e as { errors?: { message: string }[]; message?: string };
+      console.log(
+        "User creation error:",
+        err.errors?.[0]?.message || err.message
+      );
       console.log("Trying with a different email...");
       const altEmail = `test+${Date.now()}@symphony-cloud.dev`;
       user = await clerk.users.createUser({

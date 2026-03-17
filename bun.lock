@@ -552,6 +552,19 @@
         "@repo/typescript-config": "workspace:*",
       },
     },
+    "packages/symphony-client": {
+      "name": "@repo/symphony-client",
+      "version": "0.0.0",
+      "dependencies": {
+        "@t3-oss/env-nextjs": "^0.13.10",
+        "zod": "^4.3.6",
+      },
+      "devDependencies": {
+        "@repo/typescript-config": "workspace:*",
+        "@types/node": "25.3.5",
+        "typescript": "^5.9.3",
+      },
+    },
     "packages/typescript-config": {
       "name": "@repo/typescript-config",
       "version": "0.0.0",
@@ -1553,6 +1566,8 @@
     "@repo/seo": ["@repo/seo@workspace:packages/seo"],
 
     "@repo/storage": ["@repo/storage@workspace:packages/storage"],
+
+    "@repo/symphony-client": ["@repo/symphony-client@workspace:packages/symphony-client"],
 
     "@repo/typescript-config": ["@repo/typescript-config@workspace:packages/typescript-config"],
 

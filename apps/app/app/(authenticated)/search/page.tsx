@@ -1,5 +1,4 @@
 import { auth } from "@repo/auth/server";
-import { database } from "@repo/database";
 import { notFound, redirect } from "next/navigation";
 import { Header } from "../components/header";
 
@@ -22,13 +21,6 @@ export const generateMetadata = async ({
 
 const SearchPage = async ({ searchParams }: SearchPageProperties) => {
   const { q } = await searchParams;
-  const pages = await database.page.findMany({
-    where: {
-      name: {
-        contains: q,
-      },
-    },
-  });
   const { orgId } = await auth();
 
   if (!orgId) {
@@ -41,16 +33,16 @@ const SearchPage = async ({ searchParams }: SearchPageProperties) => {
 
   return (
     <>
-      <Header page="Search" pages={["Building Your Application"]} />
+      <Header page="Search" pages={["Symphony Cloud"]} />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          {pages.map((page) => (
-            <div className="aspect-video rounded-xl bg-muted/50" key={page.id}>
-              {page.name}
-            </div>
-          ))}
+        <div className="rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
+          <h3 className="font-semibold">
+            Search results for &ldquo;{q}&rdquo;
+          </h3>
+          <p className="mt-2 text-muted-foreground text-sm">
+            Search functionality will be implemented with the full dashboard.
+          </p>
         </div>
-        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
       </div>
     </>
   );

@@ -1,0 +1,45 @@
+# Makefile.control — Control harness for Symphony Cloud
+# Usage: make -f Makefile.control <target>
+# All targets delegate to scripts in scripts/harness/
+
+.PHONY: help smoke check test build ci docs-check wikilinks-check policy-check hooks-install audit
+
+SHELL := /usr/bin/env bash
+
+help: ## Show all available targets
+	@echo "Symphony Cloud — Control Harness"
+	@echo ""
+	@echo "Usage: make -f Makefile.control <target>"
+	@echo ""
+	@echo "Targets:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
+
+smoke: ## Quick validation: install + check + build app (~120s)
+	@bash scripts/harness/smoke.sh
+
+check: ## Lint (biome) + typecheck (tsc --noEmit) (~60s)
+	@bash scripts/harness/check.sh
+
+test: ## Run vitest test suite (~180s)
+	@bun run test
+
+build: ## Full Turborepo build (~300s)
+	@bun run build
+
+ci: ## Full CI pipeline: check + test + build (~600s)
+	@bash scripts/harness/ci.sh
+
+docs-check: ## Verify documentation freshness and index coverage (~10s)
+	@bash scripts/harness/check-docs-freshness.sh
+
+wikilinks-check: ## Validate no broken [[wikilinks]] in docs/ (~10s)
+	@bash scripts/harness/check-wikilinks.sh
+
+policy-check: ## Check staged files against policy gates
+	@bash scripts/harness/check-policy.sh
+
+hooks-install: ## Install git pre-commit hooks
+	@bash scripts/harness/install-hooks.sh
+
+audit: ## Entropy audit: topology, stale docs, broken links
+	@bash scripts/harness/audit.sh
