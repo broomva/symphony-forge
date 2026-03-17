@@ -30,6 +30,7 @@ graph TD
         ARCH_API["architecture/app-api.md"]
         ARCH_PKG["architecture/package-map.md"]
         ARCH_FLOW["architecture/data-flow.md"]
+        ARCH_FORGE["architecture/symphony-forge-cli.md"]
     end
 
     subgraph API Contracts
@@ -44,6 +45,12 @@ graph TD
         ADR3["decisions/adr-003-prisma-neon.md"]
         ADR4["decisions/adr-004-knowledge-system.md"]
         ADR5["decisions/adr-005-control-harness.md"]
+        ADR6["decisions/adr-006-composable-layers.md"]
+    end
+
+    subgraph Showcase
+        SHOW_SKILLS["showcase/skills-inventory.md"]
+        SHOW_THREAD["showcase/thread.md"]
     end
 
     subgraph Runbooks
@@ -77,6 +84,11 @@ graph TD
     ARCH_OV --> ARCH_API
     ARCH_OV --> ARCH_PKG
     ARCH_OV --> ARCH_FLOW
+    ARCH_OV --> ARCH_FORGE
+
+    ARCH_FORGE --> ADR6
+    ARCH_FORGE --> SHOW_SKILLS
+    SHOW_SKILLS --> SHOW_THREAD
 
     ARCH_DASH --> API_CP
     ARCH_API --> API_WH
@@ -114,6 +126,7 @@ graph TD
 - [[architecture/app-api]] -- `apps/api` (API :3002)
 - [[architecture/package-map]] -- All 20 packages with dependencies
 - [[architecture/data-flow]] -- Request flow diagrams
+- [[architecture/symphony-forge-cli]] -- CLI architecture, layer system, build pipeline
 
 ### API Contracts
 - [[api-contracts/symphony-http-api]] -- Symphony engine HTTP API
@@ -126,6 +139,7 @@ graph TD
 - [[decisions/adr-003-prisma-neon]] -- Prisma ORM + Neon PostgreSQL
 - [[decisions/adr-004-knowledge-system]] -- This knowledge system
 - [[decisions/adr-005-control-harness]] -- Control metalayer design
+- [[decisions/adr-006-composable-layers]] -- Composable layer architecture
 
 ### Runbooks
 - [[runbooks/local-dev-setup]] -- Getting started from scratch
@@ -135,6 +149,10 @@ graph TD
 ### Schemas
 - [[schemas/database-schema]] -- Prisma schema documentation
 - [[schemas/env-variables]] -- Environment variables catalog
+
+### Showcase
+- [[showcase/skills-inventory]] -- Agent skills ecosystem inventory and visualization
+- [[showcase/thread]] -- 7-post X thread for skills showcase
 
 ### Glossary
 - [[glossary]] -- Key terms and definitions
