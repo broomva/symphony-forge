@@ -33,6 +33,25 @@ apps:
       - "@repo/rate-limit"
       - "@repo/security"
       - "@repo/webhooks"
+      - "@repo/symphony-client"
+    routes:
+      v1:
+        instances: "CRUD + state/refresh proxy + monitoring"
+        workflows: "CRUD + deploy to instance"
+        runs: "List + detail with sessions"
+        api-keys: "List (masked) + create (encrypted) + delete"
+        usage: "Aggregate billing period stats"
+        settings: "Get/update org settings"
+      cron:
+        monitor: "Poll /readyz + scrape metrics for all instances"
+      webhooks:
+        auth: "Clerk webhook handler (Svix)"
+        payments: "Stripe webhook handler"
+    lib:
+      auth: "Clerk auth helper (authenticateRequest, apiError)"
+      crypto: "AES-256-GCM encrypt/decrypt for API tokens"
+      railway: "Railway GraphQL provisioning service"
+      monitoring: "Instance health check runner"
 
   web:
     path: "apps/web"
@@ -177,6 +196,11 @@ packages:
     path: "packages/typescript-config"
     description: "Shared TypeScript configuration"
     domain: infra
+
+  symphony-client:
+    path: "packages/symphony-client"
+    description: "HTTP client for Symphony engine API (/api/v1/state, /readyz, etc.)"
+    domain: api
 
   webhooks:
     path: "packages/webhooks"

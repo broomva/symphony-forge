@@ -1,7 +1,10 @@
 import { auth } from "@repo/auth/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getWorkflows } from "@/app/actions/workflows";
 import { Header } from "../components/header";
+import { CreateWorkflowDialog } from "./components/create-workflow-dialog";
+import { WorkflowList } from "./components/workflow-list";
 
 const title = "Workflows";
 const description = "Manage WORKFLOW.md configurations for Symphony instances";
@@ -18,17 +21,17 @@ const WorkflowsPage = async () => {
     notFound();
   }
 
+  const workflows = await getWorkflows();
+
   return (
     <>
-      <Header page="Workflows" pages={["Symphony Cloud"]} />
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
-          <h3 className="font-semibold">Workflows</h3>
-          <p className="mt-2 text-muted-foreground text-sm">
-            Manage your WORKFLOW.md configurations here. Create, edit, and
-            deploy workflows to Symphony instances.
-          </p>
+      <Header page="Workflows" pages={["Symphony Cloud"]}>
+        <div className="pr-4">
+          <CreateWorkflowDialog />
         </div>
+      </Header>
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <WorkflowList workflows={workflows} />
       </div>
     </>
   );

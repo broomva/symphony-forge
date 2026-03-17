@@ -23,14 +23,41 @@ Read this file first. Follow the protocols exactly.
 | `apps/email` | React Email | Email templates (port 3003) |
 | `apps/storybook` | Storybook | Component explorer (port 6006) |
 | `apps/studio` | Prisma Studio | DB explorer (port 5555) |
-| `packages/database` | Prisma | ORM + schema + migrations |
-| `packages/design-system` | shadcn/ui | Shared UI components |
+| `packages/database` | Prisma | ORM + schema + migrations (12 models) |
+| `packages/design-system` | shadcn/ui | Shared UI components (55+) |
+| `packages/symphony-client` | TypeScript | HTTP client for Symphony engine API |
 | `packages/auth` | Clerk | Authentication |
 | `packages/payments` | Stripe | Billing |
 | `packages/observability` | Sentry | Error tracking + logging |
 | `.control/` | YAML | Policy gates, commands, topology |
 | `docs/` | Markdown | Knowledge graph (Obsidian-flavored) |
 | `scripts/harness/` | Bash | Automation scripts |
+
+## Control Plane API Routes
+
+The API (`apps/api`) exposes these `/v1/*` route groups:
+
+| Route Group | Methods | Description |
+|-------------|---------|-------------|
+| `/v1/instances` | GET, POST | List/create Symphony instances |
+| `/v1/instances/:id` | GET, PATCH, DELETE | Detail/update/soft-delete instance |
+| `/v1/instances/:id/state` | GET | Proxy to engine /api/v1/state |
+| `/v1/instances/:id/refresh` | POST | Proxy to engine /api/v1/refresh |
+| `/v1/instances/:id/agents` | GET | Active agents from engine state |
+| `/v1/instances/:id/shutdown` | POST | Graceful engine shutdown |
+| `/v1/workflows` | GET, POST | List/create workflows |
+| `/v1/workflows/:id` | GET, PATCH, DELETE | Detail/update (auto-version)/soft-delete |
+| `/v1/workflows/:id/deploy` | POST | Deploy workflow to instance |
+| `/v1/runs` | GET | List runs (cursor pagination) |
+| `/v1/runs/:id` | GET | Run detail with sessions |
+| `/v1/api-keys` | GET, POST | List (masked)/create (encrypted) |
+| `/v1/api-keys/:id` | DELETE | Delete API key |
+| `/v1/usage` | GET | Aggregate billing period stats |
+| `/v1/settings` | GET, PATCH | Org settings (upsert pattern) |
+| `/cron/monitor` | GET | Health check all instances |
+
+All `/v1/*` routes use `authenticateRequest()` from `lib/auth.ts` (Clerk JWT + org scoping).
+API lib modules: `lib/crypto.ts` (AES-256-GCM), `lib/railway.ts` (provisioning), `lib/monitoring.ts` (health checks).
 
 ## Commands
 
@@ -55,6 +82,23 @@ Direct bun commands also work:
 - `bun run check` — lint via biome/ultracite
 - `bun run migrate` — Prisma format + generate + migrate dev
 - `bun run db:push` — Prisma format + generate + db push
+
+## Dependency Management
+
+Before starting any task, check for pending dependency updates:
+
+1. **Review open PRs** — Run `gh pr list --state open` and note any dependabot PRs that affect packages you're working in.
+2. **Incorporate relevant updates** — If dependabot has pending updates for packages in your task scope, apply those updates as part of your branch rather than leaving them as separate PRs.
+3. **Batch by workspace** — Use `bun update <pkg>` at the workspace root to update across all packages simultaneously. Do not manually edit individual `package.json` files for version bumps.
+4. **Follow risk tiers**:
+   - **Patch / types-only**: Apply freely, verify with `make -f Makefile.control check`.
+   - **Minor**: Review changelog, run full `make -f Makefile.control ci`.
+   - **Major**: Review migration guide, run full CI, write an ADR if behavior changes (`docs/decisions/`).
+5. **Post-update verification**: After any dependency change, run at minimum:
+   - `bun install` (regenerate lockfile)
+   - `make -f Makefile.control check` (lint + typecheck)
+   - `make -f Makefile.control test` (test suite)
+6. **Clean up** — After updates are merged, close superseded dependabot PRs with a reference to the consolidation commit.
 
 ## Constraints
 
@@ -117,6 +161,7 @@ Documents are tagged with frontmatter for filtering:
 
 Before pushing any branch:
 
+- [ ] Pending dependabot PRs reviewed; relevant updates incorporated or noted
 - [ ] Documentation updated for any schema, API, or env var changes
 - [ ] `make -f Makefile.control check` passes (lint + typecheck)
 - [ ] `make -f Makefile.control test` passes (vitest)

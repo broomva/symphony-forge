@@ -31,7 +31,7 @@
     "db:push": "cd packages/database && bunx prisma format && bunx prisma generate && bunx prisma db push",
     "clean": "git clean -xdf node_modules",
     "release": "npm publish",
-    "prepare": "scripts/harness/install-hooks.sh"
+    "prepare": "[ -n \"$CI\" ] || [ -n \"$VERCEL\" ] || scripts/harness/install-hooks.sh"
   },
   "devDependencies": {
     "@auto-it/first-time-contributor": "^11.3.6",
@@ -55,7 +55,8 @@
   "dependencies": {
     "@clack/prompts": "^1.1.0",
     "commander": "^14.0.3",
-    "nypm": "^0.6.5"
+    "nypm": "^0.6.5",
+    "vercel": "^50.32.5"
   },
   "overrides": {
     "parse5": "^7.2.1"

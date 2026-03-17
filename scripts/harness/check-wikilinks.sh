@@ -33,12 +33,39 @@ while IFS= read -r -d '' doc; do
       continue
     fi
 
+    # Skip Next.js catch-all route syntax [[...param]]
+    if [[ "$target" == ...* ]]; then
+      continue
+    fi
+
+    # Skip template placeholders (e.g., decisions/adr-NNN)
+    if [[ "$target" == *NNN* ]] || [[ "$target" == *XXX* ]]; then
+      continue
+    fi
+
+    # Skip inline code examples (generic references, not real links)
+    if [[ "$target" == "wikilinks" ]] || [[ "$target" == "internal-link" ]]; then
+      continue
+    fi
+
+    # Strip fragment anchors: path#heading -> path
+    target="${target%%#*}"
+
+    # Strip trailing slashes
+    target="${target%/}"
+
+    # Skip if empty after stripping
+    if [ -z "$target" ]; then
+      continue
+    fi
+
     CHECKED=$((CHECKED + 1))
 
-    # Resolve target: check if docs/<target>.md exists
+    # Resolve target: check if docs/<target>.md or docs/<target>/ directory exists
     target_file="$DOCS_DIR/${target}.md"
+    target_dir="$DOCS_DIR/${target}"
 
-    if [ ! -f "$target_file" ]; then
+    if [ ! -f "$target_file" ] && [ ! -d "$target_dir" ]; then
       rel_doc="${doc#"$REPO_ROOT"/}"
       BROKEN+=("$rel_doc -> [[${target}]] (expected: docs/${target}.md)")
     fi

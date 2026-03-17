@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "prisma studio --config ../../packages/database/prisma.config.ts --port 3005",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "echo 'No TypeScript source files to check'"
   },
   "devDependencies": {
     "prisma": "7.4.2"

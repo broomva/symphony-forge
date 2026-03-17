@@ -53,6 +53,18 @@ policies:
       - index: "Update docs/_index.md to reference the new doc"
     notes: "Follow existing package conventions. Use @repo/ scope."
 
+  pr-feedback-loop:
+    description: "PR review comments must be resolved before merge"
+    risk: medium
+    triggers:
+      - manual  # Triggered when PR has unresolved review comments
+    requires:
+      - triage: "Every review comment must be triaged: accept, fix, or reject with rationale"
+      - commit: "Fixes must be committed and pushed (not amended into prior commits)"
+      - ci: "All CI checks must pass after fixes are applied"
+      - reply: "Each resolved comment must have a reply confirming the resolution"
+    notes: "PR comments are sensors in the control loop. Unresolved comments are entropy — reduce them to zero before merge."
+
   production-deploy:
     description: "Deploying to production (Vercel)"
     risk: critical

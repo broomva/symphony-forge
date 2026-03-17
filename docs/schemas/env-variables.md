@@ -133,32 +133,33 @@ export const env = createEnv({
 |----------|------|----------|-------|-------------|
 | `BLOB_READ_WRITE_TOKEN` | string | No | Server | Vercel Blob storage token |
 
-### Symphony Client (`@repo/symphony-client`, planned)
+### Symphony Client (`@repo/symphony-client`)
 
 | Variable | Type | Required | Scope | Description |
 |----------|------|----------|-------|-------------|
 | `SYMPHONY_API_URL` | string | For engine | Server | Default Symphony engine URL |
 | `SYMPHONY_API_TOKEN` | string | No | Server | Default Symphony engine API token |
 
+### Control Plane (apps/api)
+
+| Variable | Type | Required | Scope | Description |
+|----------|------|----------|-------|-------------|
+| `ENCRYPTION_KEY` | string | For token encryption | Server | AES-256 key, base64-encoded (32 bytes). Generate: `openssl rand -base64 32` |
+| `RAILWAY_API_TOKEN` | string | For provisioning | Server | Railway API authentication token |
+| `RAILWAY_PROJECT_ID` | string | For provisioning | Server | Railway project ID for instance provisioning |
+| `RAILWAY_ENVIRONMENT_ID` | string | For provisioning | Server | Railway environment ID |
+| `CRON_SECRET` | string | For monitoring | Server | Bearer token to protect /cron/monitor endpoint |
+
 ## App-Level Variables
 
-### apps/app
+### Core URLs (`@repo/next-config`)
 
-| Variable | Type | Required | Description |
-|----------|------|----------|-------------|
-| `NEXT_PUBLIC_APP_URL` | string | No | Dashboard URL (default: http://localhost:3000) |
-
-### apps/api
-
-| Variable | Type | Required | Description |
-|----------|------|----------|-------------|
-| `NEXT_PUBLIC_API_URL` | string | No | API URL (default: http://localhost:3002) |
-
-### apps/web
-
-| Variable | Type | Required | Description |
-|----------|------|----------|-------------|
-| `NEXT_PUBLIC_WEB_URL` | string | No | Marketing site URL (default: http://localhost:3001) |
+| Variable | Type | Required | Scope | Description |
+|----------|------|----------|-------|-------------|
+| `NEXT_PUBLIC_APP_URL` | url | Yes | Client | Dashboard URL (e.g., https://app.symphonycloud.dev) |
+| `NEXT_PUBLIC_WEB_URL` | url | Yes | Client | Marketing site URL (e.g., https://symphonycloud.dev) |
+| `NEXT_PUBLIC_API_URL` | url | No | Client | API URL (e.g., https://api.symphonycloud.dev) |
+| `NEXT_PUBLIC_DOCS_URL` | url | No | Client | Docs URL (e.g., https://docs.symphonycloud.dev) |
 
 ## Security Notes
 

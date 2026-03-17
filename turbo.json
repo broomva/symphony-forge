@@ -14,8 +14,9 @@
         ".react-email/**"
       ]
     },
+    "typecheck": {},
     "test": {
-      "dependsOn": ["^test"]
+      "dependsOn": ["^build", "^test"]
     },
     "analyze": {
       "dependsOn": ["^analyze"]

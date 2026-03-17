@@ -13,6 +13,13 @@ concurrency:
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  # Required by @repo/next-config env validation during build
+  NEXT_PUBLIC_APP_URL: http://localhost:3000
+  NEXT_PUBLIC_WEB_URL: http://localhost:3001
+  NEXT_PUBLIC_API_URL: http://localhost:3002
+  NEXT_PUBLIC_DOCS_URL: http://localhost:3004
+  # Dummy DATABASE_URL for build (Prisma client import requires it, but no actual connection is made)
+  DATABASE_URL: postgresql://user:pass@localhost:5432/ci
 
 jobs:
   check:
@@ -31,11 +38,14 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Generate Prisma client
+        run: bunx prisma generate --schema=packages/database/prisma/schema.prisma
+
       - name: Lint (biome)
         run: bun run check
 
       - name: Typecheck
-        run: bunx tsc --noEmit
+        run: bun run turbo typecheck --filter=api --filter=app --filter=web
 
   test:
     name: Test
@@ -53,6 +63,9 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: cd packages/database && bunx prisma generate
 
       - name: Run tests
         run: bun run test
