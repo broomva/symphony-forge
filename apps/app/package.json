@@ -2,7 +2,7 @@
   "name": "app",
   "private": true,
   "scripts": {
-    "dev": "bun --bun next dev -p 3000",
+    "dev": "next dev -p 3000",
     "build": "bun --bun next build",
     "start": "bun --bun next start",
     "analyze": "ANALYZE=true npm run build",

@@ -4,7 +4,7 @@ import { z } from "zod";
 export const keys = () =>
   createEnv({
     server: {
-      DATABASE_URL: z.url().optional(),
+      DATABASE_URL: z.string().optional(),
     },
     emptyStringAsUndefined: true,
     runtimeEnv: {
