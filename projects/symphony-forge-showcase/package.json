@@ -1,0 +1,18 @@
+{
+  "name": "symphony-forge-showcase",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render SymphonyForgeShowcase out/showcase.mp4",
+    "render:gif": "remotion render SymphonyForgeShowcase out/showcase.gif --every-nth-frame=3"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.436",
+    "@remotion/transitions": "4.0.436",
+    "@types/react": "19.2.14",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "remotion": "4.0.436"
+  }
+}

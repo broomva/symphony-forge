@@ -151,6 +151,7 @@ graph TD
 - [[schemas/env-variables]] -- Environment variables catalog
 
 ### Showcase
+- [[showcase/symphony-forge]] -- Product showcase video (35s, Remotion)
 - [[showcase/skills-inventory]] -- Agent skills ecosystem inventory and visualization
 - [[showcase/thread]] -- 7-post X thread for skills showcase
 
