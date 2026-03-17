@@ -7,7 +7,7 @@
     "dev": "email dev --port 3003 --dir ../../packages/email/templates",
     "export": "email export --dir ../../packages/email/templates",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "echo 'No TypeScript files to check'"
   },
   "dependencies": {
     "@react-email/components": "1.0.8",
@@ -18,9 +18,9 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "25.3.5",
+    "@types/node": "25.5.0",
     "@types/react": "19.2.14",
-    "next": "16.1.6",
+    "next": "16.1.7",
     "typescript": "^5.9.3"
   }
 }

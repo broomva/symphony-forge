@@ -4,6 +4,7 @@
   "ui": "tui",
   "envMode": "loose",
   "tasks": {
+    "typecheck": {},
     "build": {
       "dependsOn": ["^build", "test"],
       "outputs": [
@@ -14,7 +15,6 @@
         ".react-email/**"
       ]
     },
-    "typecheck": {},
     "test": {
       "dependsOn": ["^build", "^test"]
     },

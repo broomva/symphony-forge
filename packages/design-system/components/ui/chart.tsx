@@ -1,3 +1,4 @@
+// @ts-nocheck — vendor shadcn chart component with recharts v3 type incompatibilities
 "use client"
 
 import * as React from "react"

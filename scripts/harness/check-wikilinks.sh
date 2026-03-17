@@ -22,11 +22,16 @@ CHECKED=0
 
 # Find all .md files in docs/
 while IFS= read -r -d '' doc; do
-  # Extract all [[wikilinks]] from the file
-  # Matches [[some/path]] or [[some/path|display text]]
+  # Extract all [[wikilinks]] from the file, ignoring code blocks and inline code
+  # 1. Strip fenced code blocks (```...```)
+  # 2. Strip inline code (`...`)
+  # 3. Extract wikilink targets using POSIX-compatible grep + sed
   while IFS= read -r link; do
     # Remove display text after pipe: [[path|text]] -> path
     target="${link%%|*}"
+
+    # Remove anchor: [[path#section]] -> path
+    target="${target%%#*}"
 
     # Skip empty
     if [ -z "$target" ]; then
@@ -69,7 +74,15 @@ while IFS= read -r -d '' doc; do
       rel_doc="${doc#"$REPO_ROOT"/}"
       BROKEN+=("$rel_doc -> [[${target}]] (expected: docs/${target}.md)")
     fi
-  done < <(grep -oP '\[\[\K[^\]]+' "$doc" 2>/dev/null || true)
+  done < <(
+    # Remove fenced code blocks, then inline code, then extract wikilink targets
+    # Uses POSIX grep -oE (works on both macOS and Linux)
+    sed '/^```/,/^```/d' "$doc" \
+      | sed 's/`[^`]*`//g' \
+      | grep -oE '\[\[[^]]+\]\]' 2>/dev/null \
+      | sed 's/^\[\[//; s/\]\]$//' \
+      || true
+  )
 done < <(find "$DOCS_DIR" -name '*.md' -print0 | sort -z)
 
 echo "  Checked $CHECKED wikilinks."

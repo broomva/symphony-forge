@@ -61,4 +61,4 @@ tags:
 
 <!-- Links to related docs -->
 - [[architecture/overview]]
-- [[decisions/adr-NNN]]
+- `[[decisions/adr-NNN]]` <!-- replace with actual ADR link -->

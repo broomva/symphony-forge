@@ -101,10 +101,10 @@ export async function PATCH(
     where: { id },
     data: {
       ...rest,
-      ...(metadata !== undefined ? { metadata } : {}),
-      ...(apiToken !== undefined
-        ? { apiToken: apiToken ? encrypt(apiToken) : null }
-        : {}),
+      ...(metadata === undefined ? {} : { metadata }),
+      ...(apiToken === undefined
+        ? {}
+        : { apiToken: apiToken ? encrypt(apiToken) : null }),
     },
   });
 

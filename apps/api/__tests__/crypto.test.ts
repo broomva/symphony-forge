@@ -11,10 +11,10 @@ describe("crypto – encrypt / decrypt", () => {
   });
 
   afterEach(() => {
-    if (originalEnv !== undefined) {
-      process.env.ENCRYPTION_KEY = originalEnv;
-    } else {
+    if (originalEnv === undefined) {
       process.env.ENCRYPTION_KEY = undefined;
+    } else {
+      process.env.ENCRYPTION_KEY = originalEnv;
     }
   });
 

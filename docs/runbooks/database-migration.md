@@ -112,7 +112,7 @@ packages/database/generated/
 ### 6. Update Documentation
 
 - Update [[schemas/database-schema]] with the new model/field documentation
-- If the change is significant, create an ADR in [[decisions/]]
+- If the change is significant, create an ADR in `docs/decisions/`
 
 ### 7. Test
 

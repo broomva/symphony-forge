@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
-    "@prisma/adapter-neon": "7.4.2",
-    "@prisma/client": "7.4.2",
+    "@prisma/adapter-neon": "7.5.0",
+    "@prisma/client": "7.5.0",
     "@prisma/client-runtime-utils": "^7.4.2",
     "@t3-oss/env-nextjs": "^0.13.10",
     "server-only": "^0.0.1",
@@ -22,11 +22,11 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "25.3.5",
+    "@types/node": "25.5.0",
     "@types/ws": "^8.18.1",
     "bufferutil": "^4.1.0",
     "dotenv": "^16.5.0",
-    "prisma": "7.4.2",
+    "prisma": "7.5.0",
     "typescript": "^5.9.3"
   }
 }

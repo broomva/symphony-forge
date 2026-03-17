@@ -135,18 +135,18 @@ export async function runHealthChecks(): Promise<HealthCheckResult[]> {
     checkResults.push(result);
 
     // Update status in DB if it changed
-    if (result.newStatus !== result.previousStatus) {
+    if (result.newStatus === result.previousStatus) {
+      await database.symphonyInstance.update({
+        where: { id: result.instanceId },
+        data: { lastHealthCheck: new Date() },
+      });
+    } else {
       await database.symphonyInstance.update({
         where: { id: result.instanceId },
         data: {
           status: result.newStatus,
           lastHealthCheck: new Date(),
         },
-      });
-    } else {
-      await database.symphonyInstance.update({
-        where: { id: result.instanceId },
-        data: { lastHealthCheck: new Date() },
       });
     }
   }

@@ -3,10 +3,9 @@ import { keys } from "../keys";
 
 const openai = createOpenAI({
   apiKey: keys().OPENAI_API_KEY,
-  compatibility: "strict",
 });
 
-export const models = {
+export const models: Record<string, ReturnType<typeof openai>> = {
   chat: openai("gpt-4o-mini"),
   embeddings: openai("text-embedding-3-small"),
 };
