@@ -8,11 +8,21 @@ import { keys } from "./keys";
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-neonConfig.webSocketConstructor = ws;
+const databaseUrl = keys().DATABASE_URL;
 
-const adapter = new PrismaNeon({ connectionString: keys().DATABASE_URL });
+function createPrismaClient(): PrismaClient {
+  if (!databaseUrl) {
+    throw new Error(
+      "DATABASE_URL is not set. Please add it to your .env.local file."
+    );
+  }
 
-export const database = globalForPrisma.prisma || new PrismaClient({ adapter });
+  neonConfig.webSocketConstructor = ws;
+  const adapter = new PrismaNeon({ connectionString: databaseUrl });
+  return new PrismaClient({ adapter });
+}
+
+export const database = globalForPrisma.prisma || createPrismaClient();
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = database;
