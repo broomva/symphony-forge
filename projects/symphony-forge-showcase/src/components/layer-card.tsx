@@ -26,11 +26,12 @@ export const LayerCard: React.FC<{
         gap: 20,
         opacity,
         transform: `translateX(${translateX}px) scale(${scale})`,
-        background: `linear-gradient(135deg, ${layer.color}18, ${layer.color}08)`,
-        border: `1px solid ${layer.color}40`,
+        background: `linear-gradient(145deg, ${layer.color}10, ${layer.color}05)`,
+        border: `1px solid ${layer.color}25`,
         borderRadius: 16,
         padding: "18px 24px",
         marginBottom: 12,
+        boxShadow: `0 8px 16px rgba(0, 0, 0, 0.2), 0 0 30px ${layer.color}10`,
       }}
     >
       <div
@@ -41,9 +42,10 @@ export const LayerCard: React.FC<{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: `${layer.color}25`,
+          background: `${layer.color}15`,
           borderRadius: 12,
           flexShrink: 0,
+          boxShadow: `0 0 20px ${layer.color}20`,
         }}
       >
         {layer.icon}
@@ -56,6 +58,7 @@ export const LayerCard: React.FC<{
             color: layer.color,
             fontFamily: "'JetBrains Mono', monospace",
             marginBottom: 4,
+            textShadow: `0 0 20px ${layer.color}40`,
           }}
         >
           {layer.name}
@@ -63,8 +66,8 @@ export const LayerCard: React.FC<{
         <div
           style={{
             fontSize: 18,
-            color: "#94A3B8",
-            fontFamily: "'Inter', sans-serif",
+            color: "#8899AA",
+            fontFamily: "'Poppins', sans-serif",
           }}
         >
           {layer.description}
@@ -73,7 +76,7 @@ export const LayerCard: React.FC<{
       <div
         style={{
           fontSize: 14,
-          color: "#64748B",
+          color: "#556677",
           fontFamily: "'JetBrains Mono', monospace",
           textAlign: "right",
           flexShrink: 0,

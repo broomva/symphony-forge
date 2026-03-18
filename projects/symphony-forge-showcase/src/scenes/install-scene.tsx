@@ -22,8 +22,7 @@ export const InstallScene: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background:
-          "linear-gradient(135deg, #0F0A1A 0%, #1A0A2E 50%, #0F172A 100%)",
+        background: "linear-gradient(145deg, #001F3F 0%, #12121A 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -38,12 +37,12 @@ export const InstallScene: React.FC = () => {
           width: 600,
           height: 600,
           borderRadius: "50%",
-          background: "radial-gradient(circle, #8B5CF620 0%, transparent 70%)",
+          background: "radial-gradient(circle, #0066FF20 0%, transparent 70%)",
         }}
       />
 
       <AnimatedText
-        color="#E2E8F0"
+        color="#FFFFFF"
         delay={0}
         fontSize={52}
         text="Get Started"
@@ -54,7 +53,7 @@ export const InstallScene: React.FC = () => {
       {/* npm install command */}
       <div style={{ width: "100%", maxWidth: 800 }}>
         <AnimatedText
-          color="#64748B"
+          color="#556677"
           delay={10}
           fontSize={20}
           fontWeight={400}
@@ -66,7 +65,7 @@ export const InstallScene: React.FC = () => {
         <div style={{ height: 28 }} />
 
         <AnimatedText
-          color="#64748B"
+          color="#556677"
           delay={25}
           fontSize={20}
           fontWeight={400}
@@ -78,7 +77,7 @@ export const InstallScene: React.FC = () => {
         <div style={{ height: 28 }} />
 
         <AnimatedText
-          color="#64748B"
+          color="#556677"
           delay={40}
           fontSize={20}
           fontWeight={400}
@@ -103,13 +102,13 @@ export const InstallScene: React.FC = () => {
           <div
             key={label}
             style={{
-              background: "rgba(139, 92, 246, 0.12)",
-              border: "1px solid rgba(139, 92, 246, 0.3)",
+              background: "rgba(0, 102, 255, 0.10)",
+              border: "1px solid rgba(0, 102, 255, 0.25)",
               borderRadius: 40,
               padding: "8px 20px",
               fontSize: 16,
-              color: "#C4B5FD",
-              fontFamily: "'Inter', sans-serif",
+              color: "#66BBFF",
+              fontFamily: "'Poppins', sans-serif",
               fontWeight: 500,
             }}
           >
@@ -124,8 +123,8 @@ export const InstallScene: React.FC = () => {
         style={{
           opacity: badgeOpacity,
           fontSize: 20,
-          color: "#64748B",
-          fontFamily: "'Inter', sans-serif",
+          color: "#556677",
+          fontFamily: "'Poppins', sans-serif",
         }}
       >
         github.com/broomva/symphony-forge
@@ -156,14 +155,15 @@ const CommandBox: React.FC<{ text: string; delay: number }> = ({
         transform: `translateX(${translateX}px)`,
         fontFamily: "'JetBrains Mono', monospace",
         fontSize: 26,
-        color: "#A5F3FC",
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        color: "#66BBFF",
+        background: "rgba(0, 102, 255, 0.05)",
+        border: "1px solid rgba(0, 102, 255, 0.12)",
         borderRadius: 12,
         padding: "14px 24px",
+        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
       }}
     >
-      <span style={{ color: "#6B7280" }}>$ </span>
+      <span style={{ color: "#4A5568" }}>$ </span>
       {text}
     </div>
   );

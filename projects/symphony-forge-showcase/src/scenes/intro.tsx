@@ -17,8 +17,7 @@ export const Intro: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background:
-          "linear-gradient(135deg, #0F0A1A 0%, #1A0A2E 50%, #0F172A 100%)",
+        background: "linear-gradient(145deg, #001F3F 0%, #12121A 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -33,7 +32,7 @@ export const Intro: React.FC = () => {
           width: 500,
           height: 500,
           borderRadius: "50%",
-          background: "radial-gradient(circle, #8B5CF640 0%, transparent 70%)",
+          background: "radial-gradient(circle, #0066FF30 0%, transparent 70%)",
           opacity: glowOpacity,
           transform: `scale(${glowScale})`,
         }}
@@ -45,7 +44,7 @@ export const Intro: React.FC = () => {
       </div>
 
       <AnimatedText
-        color="#E2E8F0"
+        color="#FFFFFF"
         delay={10}
         fontSize={64}
         text="symphony-forge"
@@ -54,7 +53,7 @@ export const Intro: React.FC = () => {
       <div style={{ height: 16 }} />
 
       <AnimatedText
-        color="#8B5CF6"
+        color="#0066FF"
         delay={20}
         fontSize={32}
         fontWeight={500}
@@ -62,7 +61,7 @@ export const Intro: React.FC = () => {
       />
 
       <AnimatedText
-        color="#8B5CF6"
+        color="#0066FF"
         delay={25}
         fontSize={32}
         fontWeight={500}
@@ -106,20 +105,20 @@ const StatPill: React.FC<{ label: string; value: string; delay: number }> = ({
       style={{
         opacity,
         transform: `scale(${scale})`,
-        background: "rgba(139, 92, 246, 0.12)",
-        border: "1px solid rgba(139, 92, 246, 0.3)",
+        background: "rgba(0, 102, 255, 0.10)",
+        border: "1px solid rgba(0, 102, 255, 0.25)",
         borderRadius: 40,
         padding: "12px 28px",
         display: "flex",
         alignItems: "center",
         gap: 10,
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Poppins', sans-serif",
       }}
     >
-      <span style={{ fontSize: 28, fontWeight: 800, color: "#C4B5FD" }}>
+      <span style={{ fontSize: 28, fontWeight: 800, color: "#66BBFF" }}>
         {value}
       </span>
-      <span style={{ fontSize: 16, color: "#94A3B8" }}>{label}</span>
+      <span style={{ fontSize: 16, color: "#8899AA" }}>{label}</span>
     </div>
   );
 };

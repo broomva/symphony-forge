@@ -12,22 +12,21 @@ export const MetalayerScene: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background:
-          "linear-gradient(135deg, #0F0A1A 0%, #1A0A2E 50%, #0F172A 100%)",
+        background: "linear-gradient(145deg, #001F3F 0%, #12121A 100%)",
         display: "flex",
         flexDirection: "column",
         padding: 60,
       }}
     >
       <AnimatedText
-        color="#E2E8F0"
+        color="#FFFFFF"
         delay={0}
         fontSize={44}
         text="Control Theory Mapping"
       />
       <div style={{ height: 8 }} />
       <AnimatedText
-        color="#64748B"
+        color="#556677"
         delay={8}
         fontSize={22}
         fontWeight={400}
@@ -97,8 +96,8 @@ const MappingRow: React.FC<{
           textAlign: "right",
           fontSize: 28,
           fontWeight: 700,
-          color: "#E2E8F0",
-          fontFamily: "'Inter', sans-serif",
+          color: "#FFFFFF",
+          fontFamily: "'Poppins', sans-serif",
         }}
       >
         {theory}
@@ -127,10 +126,12 @@ const MappingRow: React.FC<{
           fontWeight: 500,
           color,
           fontFamily: "'JetBrains Mono', monospace",
-          background: `${color}12`,
+          background: `${color}10`,
           border: `1px solid ${color}30`,
           borderRadius: 12,
           padding: "12px 20px",
+          boxShadow: `0 8px 16px rgba(0, 0, 0, 0.2), 0 0 20px ${color}10`,
+          textShadow: `0 0 15px ${color}40`,
         }}
       >
         {implementation}

@@ -34,7 +34,7 @@ export const AnimatedText: React.FC<{
         color,
         opacity,
         transform: `translateY(${translateY}px)`,
-        fontFamily: "'Inter', 'SF Pro Display', -apple-system, sans-serif",
+        fontFamily: "'Poppins', 'SF Pro Display', -apple-system, sans-serif",
         letterSpacing: fontSize > 40 ? "-0.02em" : "0",
         lineHeight: 1.2,
       }}

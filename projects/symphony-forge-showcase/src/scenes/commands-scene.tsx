@@ -12,22 +12,21 @@ export const CommandsScene: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background:
-          "linear-gradient(135deg, #0F0A1A 0%, #1A0A2E 50%, #0F172A 100%)",
+        background: "linear-gradient(145deg, #001F3F 0%, #12121A 100%)",
         display: "flex",
         flexDirection: "column",
         padding: 60,
       }}
     >
       <AnimatedText
-        color="#E2E8F0"
+        color="#FFFFFF"
         delay={0}
         fontSize={44}
         text="CLI Commands"
       />
       <div style={{ height: 8 }} />
       <AnimatedText
-        color="#64748B"
+        color="#556677"
         delay={8}
         fontSize={22}
         fontWeight={400}
@@ -89,25 +88,26 @@ const CommandRow: React.FC<{
         style={{
           fontFamily: "'JetBrains Mono', monospace",
           fontSize: 26,
-          color: "#A5F3FC",
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          color: "#66BBFF",
+          background: "rgba(0, 102, 255, 0.05)",
+          border: "1px solid rgba(0, 102, 255, 0.12)",
           borderRadius: 12,
           padding: "16px 24px",
           marginBottom: 8,
+          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
         }}
       >
-        <span style={{ color: "#6B7280" }}>$ </span>
+        <span style={{ color: "#4A5568" }}>$ </span>
         {displayedCmd}
-        <span style={{ color: "#8B5CF6", animation: "blink 1s infinite" }}>
+        <span style={{ color: "#0066FF", animation: "blink 1s infinite" }}>
           {cursor}
         </span>
       </div>
       <div
         style={{
           fontSize: 18,
-          color: "#64748B",
-          fontFamily: "'Inter', sans-serif",
+          color: "#556677",
+          fontFamily: "'Poppins', sans-serif",
           paddingLeft: 24,
         }}
       >

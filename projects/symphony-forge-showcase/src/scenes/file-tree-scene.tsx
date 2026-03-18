@@ -12,22 +12,21 @@ export const FileTreeScene: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background:
-          "linear-gradient(135deg, #0F0A1A 0%, #1A0A2E 50%, #0F172A 100%)",
+        background: "linear-gradient(145deg, #001F3F 0%, #12121A 100%)",
         display: "flex",
         flexDirection: "column",
         padding: 60,
       }}
     >
       <AnimatedText
-        color="#E2E8F0"
+        color="#FFFFFF"
         delay={0}
         fontSize={44}
         text="Generated File Tree"
       />
       <div style={{ height: 8 }} />
       <AnimatedText
-        color="#64748B"
+        color="#556677"
         delay={8}
         fontSize={22}
         fontWeight={400}
@@ -38,10 +37,11 @@ export const FileTreeScene: React.FC = () => {
       <div
         style={{
           flex: 1,
-          background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          background: "rgba(0, 31, 63, 0.5)",
+          border: "1px solid rgba(0, 102, 255, 0.10)",
           borderRadius: 16,
           padding: "24px 32px",
+          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -93,7 +93,7 @@ const FileTreeRow: React.FC<{
         gap: 10,
         fontFamily: "'JetBrains Mono', monospace",
         fontSize: 20,
-        color: isDir ? color : "#94A3B8",
+        color: isDir ? color : "#8899AA",
         fontWeight: isDir ? 600 : 400,
         lineHeight: 1.8,
       }}

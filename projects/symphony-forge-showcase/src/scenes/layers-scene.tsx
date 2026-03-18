@@ -7,22 +7,21 @@ export const LayersScene: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background:
-          "linear-gradient(135deg, #0F0A1A 0%, #1A0A2E 50%, #0F172A 100%)",
+        background: "linear-gradient(145deg, #001F3F 0%, #12121A 100%)",
         display: "flex",
         flexDirection: "column",
         padding: "60px 60px 40px",
       }}
     >
       <AnimatedText
-        color="#E2E8F0"
+        color="#FFFFFF"
         delay={0}
         fontSize={44}
         text="5 Composable Layers"
       />
       <div style={{ height: 8 }} />
       <AnimatedText
-        color="#64748B"
+        color="#556677"
         delay={8}
         fontSize={22}
         fontWeight={400}
