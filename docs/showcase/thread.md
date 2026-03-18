@@ -1,5 +1,5 @@
 ---
-title: "Showcase: X Thread — Skills Inventory"
+title: "Showcase: X Thread — symphony-forge"
 type: architecture
 domain: all
 phase: 1
@@ -11,95 +11,113 @@ tags:
   - type/architecture
 ---
 
-# Skills Showcase — X Thread
+# symphony-forge — X Thread
 
 > [!context]
-> 7-post X thread showcasing the agent skills ecosystem. Attach the rendered video to Post 1.
+> 7-post X thread for the symphony-forge product launch. Attach the showcase video to Post 1.
 >
-> **Generate the video**: `cd skills-showcase && npm install && npx remotion render SkillsShowcase out/skills-showcase.mp4`
+> **Video**: `projects/symphony-forge-showcase/out/showcase.mp4` or [GitHub Release](https://github.com/broomva/symphony-forge/releases/tag/v0.1.0)
 
 ---
 
 ## Post 1 (Hook + Video)
 
-> [Attach: skills-showcase.mp4]
+> [Attach: showcase.mp4]
 
-I catalogued every skill loaded into my Claude Code agent.
+I built a CLI that scaffolds any next-forge project with a control metalayer — governance, automation, knowledge graph, and AI agent instructions in one command.
 
-86 specialized capabilities across 15 domains — from recursive self-improvement loops to Liquid Glass implementation guides.
+It's called symphony-forge. Open source, Apache 2.0.
 
-Here's the full map and why it matters
-
----
-
-## Post 2 (Why skills > prompts)
-
-Skills aren't just longer prompts. They're compressed domain expertise with tool awareness.
-
-A "deep-research" skill knows to spawn parallel search agents, cross-reference sources, and format citations. A prompt only knows what you told it in that message.
-
-The difference: repeatable quality vs. one-shot luck.
+Here's what it does and why it matters:
 
 ---
 
-## Post 3 (Consciousness & Memory cluster)
+## Post 2 (The problem)
 
-The consciousness stack is the most underrated cluster:
+Every next-forge project starts the same way:
 
-- agent-consciousness — persistent memory across sessions
-- knowledge-graph-memory — Obsidian vault as episodic memory
-- control-metalayer-loop — behavioral governance for autonomous agents
-- symphony-forge — scaffolds the entire metalayer from scratch
+You clone the template, then spend days adding CI workflows, writing CLAUDE.md, setting up docs, creating policy gates, wiring git hooks...
 
-This is what turns a chatbot into an agent that learns from its own history.
+All of that is boilerplate. And it's the same boilerplate every time.
 
----
-
-## Post 4 (Research & Analysis cluster)
-
-Five research skills that replace entire analyst workflows:
-
-- deep-research — 10+ source synthesis with citation tracking
-- financial-deep-research — market analysis with regulatory compliance
-- competitor-intel — verified metrics + predicted next moves
-- technical-research — timeboxed spike investigations
-
-Each one structures ambiguity into verified, actionable output.
+symphony-forge generates all of it in seconds.
 
 ---
 
-## Post 5 (Full-stack implementation)
+## Post 3 (The 5 layers)
 
-The implementation surface is complete:
+Five composable layers — use all of them or pick what you need:
 
-- Next.js: 8 skills (best practices, cache components, migration paths)
-- Expo/React Native: 7 skills (routing, native modules, TestFlight)
-- Infrastructure: 7 skills (Railway, Vercel, EAS CI/CD, Symphony, symphony-forge)
-- MCP: 4 skills (build servers, design tools, integrate protocols)
+- control — policy gates + command registry + repo topology
+- harness — bash scripts, Makefile, CI workflow, git hooks
+- knowledge — Obsidian docs skeleton with templates and ADRs
+- consciousness — CLAUDE.md + AGENTS.md (metalayer-aware)
+- autoany — EGRI self-improvement loop config
 
-No gaps between "plan it" and "ship it."
+Each layer works independently. Install one now, add more later.
 
 ---
 
-## Post 6 (Niche high-signal skills)
+## Post 4 (Control theory)
 
-The specialist skills are where it gets interesting:
+The layers aren't arbitrary. They map to control theory:
 
-- alkosto-wait-optimizer — probability model for store promotions
-- garmin-connect — health data queries from your watch
-- json-render-remotion — JSON specs to rendered video (meta: this showcase was built with Remotion skills)
-- liquid-glass-design — iOS 26 design system from WWDC 2025
+- Sensors → policy gates detect high-risk changes
+- Actuators → harness scripts enforce standards
+- Model → knowledge graph is the system's self-description
+- Controller → CLAUDE.md/AGENTS.md close the feedback loop
+- Feedback → entropy audit measures drift
 
-Niche skills compound. They turn "I can't help with that" into instant expertise.
+Your repo becomes a control system that agents can reason about.
+
+---
+
+## Post 5 (How to use it)
+
+Three commands:
+
+```
+npx symphony-forge init my-app       # new project
+npx symphony-forge layer all         # existing project
+npx symphony-forge audit             # check entropy
+```
+
+Works with bun, npm, yarn, or pnpm. Generates 30+ files. Tracks state in .symphony-forge.json.
+
+Also ships as an agent skill — installs across 42+ AI coding agents:
+
+```
+npx skills add broomva/symphony-forge
+```
+
+---
+
+## Post 6 (What gets generated)
+
+One command, full scaffold:
+
+```
+.control/policy.yaml          # 6 risk gates
+.control/commands.yaml         # 8 canonical commands
+.control/topology.yaml         # repo map
+scripts/harness/smoke.sh       # quick validation
+scripts/harness/ci.sh          # full pipeline
+docs/_index.md                 # knowledge graph entry
+docs/decisions/adr-001-*.md    # first ADR
+CLAUDE.md                      # agent instructions
+AGENTS.md                      # agent constraints
+Makefile.control               # make targets
+.github/workflows/ci.yml       # GitHub Actions
+```
+
+Every file adapts based on which layers are installed.
 
 ---
 
 ## Post 7 (CTA)
 
-The real unlock isn't any single skill — it's composition.
+symphony-forge is open source: github.com/broomva/symphony-forge
 
-A research skill feeds a spec-driven-development workflow that outputs code reviewed by web-design-guidelines and tested by dogfood.
+If you're starting a next-forge project — or any Turborepo monorepo — and want agents to operate safely from day one, this is the fastest way to get there.
 
-That's not prompting. That's an engineering pipeline.
-
-What skill cluster would change your workflow? Building custom skills is a skill itself: `npx skills add broomva/symphony-forge`
+What would you add to the metalayer?
