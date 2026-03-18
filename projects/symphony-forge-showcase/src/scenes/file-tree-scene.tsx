@@ -37,7 +37,7 @@ export const FileTreeScene: React.FC = () => {
         {/* File tree inside editor-style window */}
         <TerminalWindow
           delay={8}
-          title="my-project \u2014 File Explorer"
+          title={"my-project — File Explorer"}
           width={700}
         >
           {fileTree.map((item, i) => (

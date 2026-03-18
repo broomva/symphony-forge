@@ -29,7 +29,7 @@ export const CommandsScene: React.FC = () => {
         <div style={{ height: 32 }} />
 
         {/* Terminal mockup showing actual CLI output */}
-        <TerminalWindow delay={10} title="~/my-project \u2014 zsh" width={880}>
+        <TerminalWindow delay={10} title={"~/my-project — zsh"} width={880}>
           <TypedLine
             color="#66BBFF"
             delay={18}
@@ -45,26 +45,24 @@ export const CommandsScene: React.FC = () => {
           <OutputLine
             color="#8899AA"
             delay={50}
-            text="\u250C  Symphony Forge \u2014 Layer Manager"
+            text={"┌  Symphony Forge — Layer Manager"}
           />
-          <OutputLine color="#8899AA" delay={58} text="\u2502" />
+          <OutputLine color="#8899AA" delay={58} text={"│"} />
           <OutputLine
             color="#00CC66"
             delay={65}
-            text="\u25C7  Installed 27 files."
+            text={"◇  Installed 27 files."}
           />
-          <OutputLine color="#8899AA" delay={72} text="\u2502" />
+          <OutputLine color="#8899AA" delay={72} text={"│"} />
           <OutputLine
             color="#3399FF"
             delay={78}
-            text="\u25CF  Layers: control, harness, knowledge, consciousness, autoany"
+            text={
+              "●  Layers: control, harness, knowledge, consciousness, autoany"
+            }
           />
-          <OutputLine color="#8899AA" delay={85} text="\u2502" />
-          <OutputLine
-            color="#556677"
-            delay={90}
-            text="\u25CF  Files written:"
-          />
+          <OutputLine color="#8899AA" delay={85} text={"│"} />
+          <OutputLine color="#556677" delay={90} text={"●  Files written:"} />
           <FileOutput
             color="#0066FF"
             delay={95}
@@ -94,11 +92,11 @@ export const CommandsScene: React.FC = () => {
             text="    .control/egri.yaml"
           />
           <OutputLine color="#556677" delay={119} text="    ... and 19 more" />
-          <OutputLine color="#8899AA" delay={125} text="\u2502" />
+          <OutputLine color="#8899AA" delay={125} text={"│"} />
           <OutputLine
             color="#00CC66"
             delay={130}
-            text="\u2514  Layer installation complete."
+            text={"└  Layer installation complete."}
           />
         </TerminalWindow>
       </AbsoluteFill>
