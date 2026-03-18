@@ -15,37 +15,38 @@ export const MetalayerScene: React.FC = () => {
   return (
     <AbsoluteFill>
       <GradientBg />
-      <BokehParticles count={12} />
+      <BokehParticles count={15} />
 
       <AbsoluteFill
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: 60,
+          padding: "50px 60px",
         }}
       >
         <WordReveal
           color="#FFFFFF"
           delay={0}
-          fontSize={44}
-          text="Control Theory Mapping"
+          fontSize={40}
+          text="Maps to control theory"
         />
         <div style={{ height: 8 }} />
         <WordReveal
           color="#556677"
-          delay={8}
-          fontSize={22}
+          delay={6}
+          fontSize={20}
           fontWeight={400}
-          text="Every layer maps to a control system primitive"
+          text="Every layer is a control system primitive"
         />
-        <div style={{ height: 48 }} />
+        <div style={{ height: 36 }} />
 
+        {/* Mapping rows with glass panels */}
         <div
           style={{
             flex: 1,
             display: "flex",
             flexDirection: "column",
-            gap: 20,
+            gap: 16,
             justifyContent: "center",
           }}
         >
@@ -55,59 +56,63 @@ export const MetalayerScene: React.FC = () => {
         </div>
       </AbsoluteFill>
 
-      <Vignette intensity={0.4} />
+      <Vignette intensity={0.45} />
     </AbsoluteFill>
   );
 };
 
 const MappingRow: React.FC<{
-  theory: string;
-  implementation: string;
   color: string;
+  implementation: string;
   index: number;
+  theory: string;
 }> = ({ theory, implementation, color, index }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const delay = 15 + index * 8;
+  const delay = 12 + index * 10;
   const entrance = spring({
     frame: frame - delay,
     fps,
-    config: { damping: 28, mass: 1, overshootClamping: true, stiffness: 120 },
+    config: {
+      damping: 28,
+      mass: 1,
+      overshootClamping: true,
+      stiffness: 120,
+    },
   });
   const opacity = interpolate(entrance, [0, 1], [0, 1]);
-  const scale = interpolate(entrance, [0, 1], [0.85, 1]);
-  const blur = interpolate(entrance, [0, 0.4], [3, 0], {
+  const scale = interpolate(entrance, [0, 1], [0.9, 1]);
+  const blur = interpolate(entrance, [0, 0.4], [4, 0], {
     extrapolateRight: "clamp",
   });
 
-  // Arrow animation
-  const arrowDelay = delay + 10;
+  // Arrow
   const arrowEntrance = spring({
-    frame: frame - arrowDelay,
+    frame: frame - delay - 8,
     fps,
     config: { damping: 200 },
   });
   const arrowOpacity = interpolate(arrowEntrance, [0, 1], [0, 1]);
-  const arrowX = interpolate(arrowEntrance, [0, 1], [-10, 0]);
+  const arrowScale = interpolate(arrowEntrance, [0, 1], [0.5, 1]);
 
   return (
     <div
       style={{
         display: "flex",
         alignItems: "center",
-        gap: 24,
+        gap: 20,
         opacity,
         transform: `scale(${scale})`,
         filter: `blur(${blur}px)`,
       }}
     >
-      {/* Theory side */}
+      {/* Theory label */}
       <div
         style={{
           flex: 1,
           textAlign: "right",
-          fontSize: 28,
+          fontSize: 26,
           fontWeight: 700,
           color: "#FFFFFF",
           fontFamily: "'Poppins', sans-serif",
@@ -120,33 +125,39 @@ const MappingRow: React.FC<{
       <div
         style={{
           opacity: arrowOpacity,
-          transform: `translateX(${arrowX}px)`,
-          fontSize: 28,
+          transform: `scale(${arrowScale})`,
+          width: 50,
+          height: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: `${color}12`,
+          borderRadius: "50%",
+          border: `1px solid ${color}25`,
+          fontSize: 22,
           color,
-          fontFamily: "monospace",
-          width: 60,
-          textAlign: "center",
+          textShadow: `0 0 15px ${color}50`,
         }}
       >
         {"\u2192"}
       </div>
 
-      {/* Implementation side */}
+      {/* Implementation panel */}
       <div
         style={{
           flex: 1.5,
-          fontSize: 24,
-          fontWeight: 500,
+          fontSize: 22,
+          fontWeight: 600,
           color,
           fontFamily: "'JetBrains Mono', monospace",
-          background: `${color}10`,
-          border: `1px solid ${color}30`,
-          borderRadius: 12,
-          padding: "12px 20px",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          boxShadow: `0 8px 20px rgba(0, 0, 0, 0.25), 0 0 20px ${color}08, inset 0 1px 0 rgba(255, 255, 255, 0.05)`,
-          textShadow: `0 0 15px ${color}40`,
+          background: `linear-gradient(145deg, ${color}08, rgba(255,255,255,0.03))`,
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          border: `1px solid ${color}20`,
+          borderRadius: 14,
+          padding: "14px 22px",
+          boxShadow: `0 10px 25px rgba(0, 0, 0, 0.25), 0 0 20px ${color}06, inset 0 1px 0 rgba(255, 255, 255, 0.04)`,
+          textShadow: `0 0 15px ${color}30`,
         }}
       >
         {implementation}

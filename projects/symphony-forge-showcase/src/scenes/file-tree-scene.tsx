@@ -7,6 +7,7 @@ import {
 } from "remotion";
 import { BokehParticles } from "../components/bokeh-particles";
 import { GradientBg } from "../components/gradient-bg";
+import { TerminalWindow } from "../components/terminal-window";
 import { Vignette } from "../components/vignette";
 import { WordReveal } from "../components/word-reveal";
 import { fileTree } from "../data/content";
@@ -21,51 +22,28 @@ export const FileTreeScene: React.FC = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: 60,
+          alignItems: "center",
+          padding: "50px 60px",
         }}
       >
         <WordReveal
           color="#FFFFFF"
           delay={0}
-          fontSize={44}
-          text="Generated File Tree"
+          fontSize={40}
+          text="What gets generated"
         />
-        <div style={{ height: 8 }} />
-        <WordReveal
-          color="#556677"
-          delay={8}
-          fontSize={22}
-          fontWeight={400}
-          text="All layers installed with `symphony-forge layer all`"
-        />
-        <div style={{ height: 32 }} />
+        <div style={{ height: 24 }} />
 
-        <div
-          style={{
-            flex: 1,
-            background: "rgba(0, 31, 63, 0.3)",
-            border: "1px solid rgba(0, 102, 255, 0.08)",
-            borderRadius: 16,
-            padding: "24px 32px",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-            boxShadow:
-              "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: 4,
-            overflow: "hidden",
-          }}
+        {/* File tree inside editor-style window */}
+        <TerminalWindow
+          delay={8}
+          title="my-project \u2014 File Explorer"
+          width={700}
         >
           {fileTree.map((item, i) => (
-            <FileTreeRow
-              key={`${item.indent}-${item.path}`}
-              {...item}
-              index={i}
-            />
+            <TreeLine key={`${item.indent}-${item.path}`} {...item} index={i} />
           ))}
-        </div>
+        </TerminalWindow>
       </AbsoluteFill>
 
       <Vignette intensity={0.4} />
@@ -73,11 +51,11 @@ export const FileTreeScene: React.FC = () => {
   );
 };
 
-const FileTreeRow: React.FC<{
-  path: string;
-  indent: number;
+const TreeLine: React.FC<{
   color: string;
+  indent: number;
   index: number;
+  path: string;
 }> = ({ path, indent, color, index }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -89,10 +67,7 @@ const FileTreeRow: React.FC<{
     config: { damping: 200 },
   });
   const opacity = interpolate(entrance, [0, 1], [0, 1]);
-  const translateY = interpolate(entrance, [0, 1], [10, 0]);
-  const blur = interpolate(entrance, [0, 0.4], [3, 0], {
-    extrapolateRight: "clamp",
-  });
+  const translateX = interpolate(entrance, [0, 1], [15, 0]);
 
   const isDir = path.endsWith("/");
   const icon = isDir ? "\uD83D\uDCC1" : "\uD83D\uDCC4";
@@ -101,21 +76,21 @@ const FileTreeRow: React.FC<{
     <div
       style={{
         opacity,
-        transform: `translateY(${translateY}px)`,
-        filter: `blur(${blur}px)`,
-        paddingLeft: indent * 28,
+        transform: `translateX(${translateX}px)`,
+        paddingLeft: indent * 24,
         display: "flex",
         alignItems: "center",
-        gap: 10,
-        fontFamily: "'JetBrains Mono', monospace",
-        fontSize: 20,
-        color: isDir ? color : "#8899AA",
+        gap: 8,
+        fontSize: 17,
+        color: isDir ? color : "#7B8FA0",
         fontWeight: isDir ? 600 : 400,
-        lineHeight: 1.8,
+        lineHeight: 1.9,
       }}
     >
-      <span style={{ fontSize: 16 }}>{icon}</span>
-      {path}
+      <span style={{ fontSize: 14 }}>{icon}</span>
+      <span style={{ textShadow: isDir ? `0 0 12px ${color}30` : "none" }}>
+        {path}
+      </span>
     </div>
   );
 };

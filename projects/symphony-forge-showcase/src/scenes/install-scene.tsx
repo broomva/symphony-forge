@@ -7,26 +7,28 @@ import {
 } from "remotion";
 import { BokehParticles } from "../components/bokeh-particles";
 import { GradientBg } from "../components/gradient-bg";
+import { GradientText } from "../components/gradient-text";
 import { LightSweep } from "../components/light-sweep";
+import { TerminalWindow } from "../components/terminal-window";
+import { TypedLine } from "../components/typed-line";
 import { Vignette } from "../components/vignette";
-import { WordReveal } from "../components/word-reveal";
 
 export const InstallScene: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const badgeEntrance = spring({
-    frame: frame - 50,
+    frame: frame - 70,
     fps,
-    config: { damping: 20, stiffness: 200 },
+    config: { damping: 20, overshootClamping: true, stiffness: 200 },
   });
   const badgeOpacity = interpolate(badgeEntrance, [0, 1], [0, 1]);
-  const badgeScale = interpolate(badgeEntrance, [0, 1], [0.8, 1]);
+  const badgeScale = interpolate(badgeEntrance, [0, 1], [0.85, 1]);
 
   return (
     <AbsoluteFill>
       <GradientBg />
-      <BokehParticles count={20} />
+      <BokehParticles count={25} />
 
       <AbsoluteFill
         style={{
@@ -37,156 +39,124 @@ export const InstallScene: React.FC = () => {
           padding: 60,
         }}
       >
-        {/* Background glow */}
+        {/* Glow */}
         <div
           style={{
             position: "absolute",
-            width: 600,
-            height: 600,
+            width: 700,
+            height: 700,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, #0066FF20 0%, transparent 70%)",
+              "radial-gradient(circle, #0066FF15 0%, #00CC6608 40%, transparent 65%)",
           }}
         />
 
-        <LightSweep>
-          <WordReveal
-            color="#FFFFFF"
+        <LightSweep delay={15}>
+          <GradientText
             delay={0}
-            fontSize={52}
+            fontSize={56}
+            from="#0066FF"
             text="Get Started"
+            to="#00CC66"
           />
         </LightSweep>
 
-        <div style={{ height: 40 }} />
+        <div style={{ height: 36 }} />
 
-        {/* npm install command */}
-        <div style={{ width: "100%", maxWidth: 800 }}>
-          <WordReveal
-            color="#556677"
-            delay={10}
-            fontSize={20}
-            fontWeight={400}
-            text="New project:"
+        {/* Terminal with install commands */}
+        <TerminalWindow delay={10} title="Terminal" width={750}>
+          <div style={{ marginBottom: 4, color: "#556677", fontSize: 14 }}>
+            # New project
+          </div>
+          <TypedLine
+            color="#66BBFF"
+            delay={20}
+            prefix="$ "
+            prefixColor="#4A5568"
+            speed={1}
+            text="npx symphony-forge init my-app"
           />
-          <div style={{ height: 8 }} />
-          <CommandBox delay={15} text="npx symphony-forge init my-app" />
 
-          <div style={{ height: 28 }} />
+          <div style={{ height: 16 }} />
 
-          <WordReveal
-            color="#556677"
-            delay={25}
-            fontSize={20}
-            fontWeight={400}
-            text="Existing project:"
+          <div style={{ marginBottom: 4, color: "#556677", fontSize: 14 }}>
+            # Existing project
+          </div>
+          <TypedLine
+            color="#66BBFF"
+            delay={45}
+            prefix="$ "
+            prefixColor="#4A5568"
+            speed={1}
+            text="npx symphony-forge layer all"
           />
-          <div style={{ height: 8 }} />
-          <CommandBox delay={30} text="npx symphony-forge layer all" />
 
-          <div style={{ height: 28 }} />
+          <div style={{ height: 16 }} />
 
-          <WordReveal
-            color="#556677"
-            delay={40}
-            fontSize={20}
-            fontWeight={400}
-            text="Agent skill:"
+          <div style={{ marginBottom: 4, color: "#556677", fontSize: 14 }}>
+            # Agent skill (42+ agents)
+          </div>
+          <TypedLine
+            color="#00CC66"
+            delay={65}
+            prefix="$ "
+            prefixColor="#4A5568"
+            speed={1}
+            text="npx skills add broomva/symphony-forge"
           />
-          <div style={{ height: 8 }} />
-          <CommandBox delay={45} text="npx skills add broomva/symphony-forge" />
-        </div>
+        </TerminalWindow>
 
-        <div style={{ height: 48 }} />
+        <div style={{ height: 36 }} />
 
         {/* Badges */}
         <div
           style={{
             display: "flex",
-            gap: 16,
+            gap: 14,
             opacity: badgeOpacity,
             transform: `scale(${badgeScale})`,
           }}
         >
-          {["Apache 2.0", "TypeScript", "42+ Agents"].map((label) => (
-            <div
-              key={label}
-              style={{
-                background: "rgba(0, 102, 255, 0.10)",
-                border: "1px solid rgba(0, 102, 255, 0.25)",
-                borderRadius: 40,
-                padding: "8px 20px",
-                fontSize: 16,
-                color: "#66BBFF",
-                fontFamily: "'Poppins', sans-serif",
-                fontWeight: 500,
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
-              }}
-            >
-              {label}
-            </div>
-          ))}
+          {["Apache 2.0", "TypeScript", "42+ Agents", "4 Package Managers"].map(
+            (label) => (
+              <div
+                key={label}
+                style={{
+                  background: "rgba(0, 102, 255, 0.06)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  border: "1px solid rgba(0, 102, 255, 0.15)",
+                  borderRadius: 40,
+                  padding: "8px 18px",
+                  fontSize: 14,
+                  color: "#66BBFF",
+                  fontFamily: "'Poppins', sans-serif",
+                  fontWeight: 500,
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                }}
+              >
+                {label}
+              </div>
+            )
+          )}
         </div>
 
-        <div style={{ height: 32 }} />
+        <div style={{ height: 20 }} />
 
         <div
           style={{
             opacity: badgeOpacity,
-            fontSize: 20,
-            color: "#556677",
+            fontSize: 18,
+            color: "#4A5C6B",
             fontFamily: "'Poppins', sans-serif",
+            fontWeight: 400,
           }}
         >
           github.com/broomva/symphony-forge
         </div>
       </AbsoluteFill>
 
-      <Vignette intensity={0.4} />
+      <Vignette intensity={0.5} />
     </AbsoluteFill>
-  );
-};
-
-const CommandBox: React.FC<{ text: string; delay: number }> = ({
-  text,
-  delay,
-}) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const entrance = spring({
-    frame: frame - delay,
-    fps,
-    config: { damping: 200 },
-  });
-  const opacity = interpolate(entrance, [0, 1], [0, 1]);
-  const translateX = interpolate(entrance, [0, 1], [-20, 0]);
-  const blur = interpolate(entrance, [0, 0.4], [3, 0], {
-    extrapolateRight: "clamp",
-  });
-
-  return (
-    <div
-      style={{
-        opacity,
-        transform: `translateX(${translateX}px)`,
-        filter: `blur(${blur}px)`,
-        fontFamily: "'JetBrains Mono', monospace",
-        fontSize: 26,
-        color: "#66BBFF",
-        background: "rgba(0, 102, 255, 0.05)",
-        border: "1px solid rgba(0, 102, 255, 0.12)",
-        borderRadius: 12,
-        padding: "14px 24px",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        boxShadow:
-          "0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
-      }}
-    >
-      <span style={{ color: "#4A5568" }}>$ </span>
-      {text}
-    </div>
   );
 };

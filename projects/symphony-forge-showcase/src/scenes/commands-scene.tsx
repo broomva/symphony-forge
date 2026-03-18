@@ -1,15 +1,10 @@
-import {
-  AbsoluteFill,
-  interpolate,
-  spring,
-  useCurrentFrame,
-  useVideoConfig,
-} from "remotion";
+import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { BokehParticles } from "../components/bokeh-particles";
 import { GradientBg } from "../components/gradient-bg";
+import { TerminalWindow } from "../components/terminal-window";
+import { TypedLine } from "../components/typed-line";
 import { Vignette } from "../components/vignette";
 import { WordReveal } from "../components/word-reveal";
-import { commands } from "../data/content";
 
 export const CommandsScene: React.FC = () => {
   return (
@@ -21,123 +16,124 @@ export const CommandsScene: React.FC = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: 60,
+          alignItems: "center",
+          padding: "50px 60px",
         }}
       >
         <WordReveal
           color="#FFFFFF"
           delay={0}
-          fontSize={44}
-          text="CLI Commands"
+          fontSize={40}
+          text="One command. Full scaffold."
         />
-        <div style={{ height: 12 }} />
-        <WordReveal
-          color="#556677"
-          delay={5}
-          fontSize={22}
-          fontWeight={400}
-          text="One tool, four workflows"
-        />
-        <div style={{ height: 48 }} />
+        <div style={{ height: 32 }} />
 
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            gap: 24,
-            justifyContent: "center",
-          }}
-        >
-          {commands.map((cmd, i) => (
-            <GlassCommandRow
-              cmd={cmd.cmd}
-              description={cmd.description}
-              index={i}
-              key={cmd.cmd}
-            />
-          ))}
-        </div>
+        {/* Terminal mockup showing actual CLI output */}
+        <TerminalWindow delay={10} title="~/my-project \u2014 zsh" width={880}>
+          <TypedLine
+            color="#66BBFF"
+            delay={18}
+            prefix="$ "
+            prefixColor="#4A5568"
+            speed={1.2}
+            text="npx symphony-forge layer all --force"
+          />
+
+          <div style={{ height: 12 }} />
+
+          {/* CLI output lines */}
+          <OutputLine
+            color="#8899AA"
+            delay={50}
+            text="\u250C  Symphony Forge \u2014 Layer Manager"
+          />
+          <OutputLine color="#8899AA" delay={58} text="\u2502" />
+          <OutputLine
+            color="#00CC66"
+            delay={65}
+            text="\u25C7  Installed 27 files."
+          />
+          <OutputLine color="#8899AA" delay={72} text="\u2502" />
+          <OutputLine
+            color="#3399FF"
+            delay={78}
+            text="\u25CF  Layers: control, harness, knowledge, consciousness, autoany"
+          />
+          <OutputLine color="#8899AA" delay={85} text="\u2502" />
+          <OutputLine
+            color="#556677"
+            delay={90}
+            text="\u25CF  Files written:"
+          />
+          <FileOutput
+            color="#0066FF"
+            delay={95}
+            text="    .control/policy.yaml"
+          />
+          <FileOutput
+            color="#0066FF"
+            delay={98}
+            text="    .control/commands.yaml"
+          />
+          <FileOutput
+            color="#00CC66"
+            delay={101}
+            text="    scripts/harness/smoke.sh"
+          />
+          <FileOutput
+            color="#00CC66"
+            delay={104}
+            text="    scripts/harness/ci.sh"
+          />
+          <FileOutput color="#34C759" delay={107} text="    docs/_index.md" />
+          <FileOutput color="#3399FF" delay={110} text="    CLAUDE.md" />
+          <FileOutput color="#3399FF" delay={113} text="    AGENTS.md" />
+          <FileOutput
+            color="#FF3B30"
+            delay={116}
+            text="    .control/egri.yaml"
+          />
+          <OutputLine color="#556677" delay={119} text="    ... and 19 more" />
+          <OutputLine color="#8899AA" delay={125} text="\u2502" />
+          <OutputLine
+            color="#00CC66"
+            delay={130}
+            text="\u2514  Layer installation complete."
+          />
+        </TerminalWindow>
       </AbsoluteFill>
 
-      <Vignette intensity={0.4} />
+      <Vignette intensity={0.45} />
     </AbsoluteFill>
   );
 };
 
-const GlassCommandRow: React.FC<{
-  cmd: string;
-  description: string;
-  index: number;
-}> = ({ cmd, description, index }) => {
+const OutputLine: React.FC<{ color: string; delay: number; text: string }> = ({
+  color,
+  delay,
+  text,
+}) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const delay = 12 + index * 12;
-  const entrance = spring({
-    frame: frame - delay,
-    fps,
-    config: { damping: 28, mass: 1, overshootClamping: true, stiffness: 120 },
-  });
-  const opacity = interpolate(entrance, [0, 1], [0, 1]);
-  const translateX = interpolate(entrance, [0, 1], [-40, 0]);
-  const blur = interpolate(entrance, [0, 0.4], [3, 0], {
-    extrapolateRight: "clamp",
-  });
-
-  // Typing effect
-  const typeStart = delay + 8;
-  const typeProgress = interpolate(frame - typeStart, [0, 20], [0, 1], {
+  const opacity = interpolate(frame - delay, [0, 5], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const visibleChars = Math.floor(typeProgress * cmd.length);
-  const displayedCmd = cmd.slice(0, visibleChars);
-  const showCursor = typeProgress < 1;
-  const cursorBlink = Math.floor(frame / 15) % 2 === 0;
+
+  return <div style={{ opacity, color, lineHeight: 1.6 }}>{text}</div>;
+};
+
+const FileOutput: React.FC<{ color: string; delay: number; text: string }> = ({
+  color,
+  delay,
+  text,
+}) => {
+  const frame = useCurrentFrame();
+  const opacity = interpolate(frame - delay, [0, 3], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   return (
-    <div
-      style={{
-        opacity,
-        transform: `translateX(${translateX}px)`,
-        filter: `blur(${blur}px)`,
-      }}
-    >
-      <div
-        style={{
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 26,
-          color: "#66BBFF",
-          background: "rgba(0, 102, 255, 0.04)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          border: "1px solid rgba(0, 102, 255, 0.10)",
-          borderRadius: 14,
-          padding: "16px 24px",
-          marginBottom: 8,
-          boxShadow:
-            "0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
-        }}
-      >
-        <span style={{ color: "#4A5568" }}>$ </span>
-        {displayedCmd}
-        {showCursor && (
-          <span style={{ color: "#0066FF", opacity: cursorBlink ? 1 : 0 }}>
-            |
-          </span>
-        )}
-      </div>
-      <div
-        style={{
-          fontSize: 17,
-          color: "#556677",
-          fontFamily: "'Poppins', sans-serif",
-          paddingLeft: 24,
-        }}
-      >
-        {description}
-      </div>
-    </div>
+    <div style={{ opacity, color, lineHeight: 1.5, fontSize: 15 }}>{text}</div>
   );
 };
