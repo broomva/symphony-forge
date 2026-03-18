@@ -8,8 +8,10 @@
     "render:gif": "remotion render SymphonyForgeShowcase out/showcase.gif --every-nth-frame=3"
   },
   "dependencies": {
+    "@remotion/animation-utils": "^4.0.436",
     "@remotion/cli": "4.0.436",
-    "@remotion/transitions": "4.0.436",
+    "@remotion/noise": "^4.0.436",
+    "@remotion/transitions": "^4.0.436",
     "@types/react": "19.2.14",
     "react": "19.2.4",
     "react-dom": "19.2.4",

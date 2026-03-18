@@ -5,58 +5,70 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { AnimatedText } from "../components/animated-text";
+import { BokehParticles } from "../components/bokeh-particles";
+import { GradientBg } from "../components/gradient-bg";
+import { Vignette } from "../components/vignette";
+import { WordReveal } from "../components/word-reveal";
 import { fileTree } from "../data/content";
 
 export const FileTreeScene: React.FC = () => {
   return (
-    <AbsoluteFill
-      style={{
-        background: "linear-gradient(145deg, #001F3F 0%, #12121A 100%)",
-        display: "flex",
-        flexDirection: "column",
-        padding: 60,
-      }}
-    >
-      <AnimatedText
-        color="#FFFFFF"
-        delay={0}
-        fontSize={44}
-        text="Generated File Tree"
-      />
-      <div style={{ height: 8 }} />
-      <AnimatedText
-        color="#556677"
-        delay={8}
-        fontSize={22}
-        fontWeight={400}
-        text="All layers installed with `symphony-forge layer all`"
-      />
-      <div style={{ height: 32 }} />
+    <AbsoluteFill>
+      <GradientBg />
+      <BokehParticles count={10} />
 
-      <div
+      <AbsoluteFill
         style={{
-          flex: 1,
-          background: "rgba(0, 31, 63, 0.5)",
-          border: "1px solid rgba(0, 102, 255, 0.10)",
-          borderRadius: 16,
-          padding: "24px 32px",
-          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          gap: 4,
-          overflow: "hidden",
+          padding: 60,
         }}
       >
-        {fileTree.map((item, i) => (
-          <FileTreeRow
-            key={`${item.indent}-${item.path}`}
-            {...item}
-            index={i}
-          />
-        ))}
-      </div>
+        <WordReveal
+          color="#FFFFFF"
+          delay={0}
+          fontSize={44}
+          text="Generated File Tree"
+        />
+        <div style={{ height: 8 }} />
+        <WordReveal
+          color="#556677"
+          delay={8}
+          fontSize={22}
+          fontWeight={400}
+          text="All layers installed with `symphony-forge layer all`"
+        />
+        <div style={{ height: 32 }} />
+
+        <div
+          style={{
+            flex: 1,
+            background: "rgba(0, 31, 63, 0.3)",
+            border: "1px solid rgba(0, 102, 255, 0.08)",
+            borderRadius: 16,
+            padding: "24px 32px",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            boxShadow:
+              "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: 4,
+            overflow: "hidden",
+          }}
+        >
+          {fileTree.map((item, i) => (
+            <FileTreeRow
+              key={`${item.indent}-${item.path}`}
+              {...item}
+              index={i}
+            />
+          ))}
+        </div>
+      </AbsoluteFill>
+
+      <Vignette intensity={0.4} />
     </AbsoluteFill>
   );
 };
@@ -78,6 +90,9 @@ const FileTreeRow: React.FC<{
   });
   const opacity = interpolate(entrance, [0, 1], [0, 1]);
   const translateY = interpolate(entrance, [0, 1], [10, 0]);
+  const blur = interpolate(entrance, [0, 0.4], [3, 0], {
+    extrapolateRight: "clamp",
+  });
 
   const isDir = path.endsWith("/");
   const icon = isDir ? "\uD83D\uDCC1" : "\uD83D\uDCC4";
@@ -87,6 +102,7 @@ const FileTreeRow: React.FC<{
       style={{
         opacity,
         transform: `translateY(${translateY}px)`,
+        filter: `blur(${blur}px)`,
         paddingLeft: indent * 28,
         display: "flex",
         alignItems: "center",
