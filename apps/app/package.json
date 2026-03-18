@@ -7,6 +7,9 @@
     "start": "bun --bun next start",
     "analyze": "ANALYZE=true npm run build",
     "test": "NODE_ENV=test vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
@@ -47,6 +50,7 @@
     "jsdom": "^28.1.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
+    "@playwright/test": "^1.58.2",
     "vitest": "^4.0.18"
   }
 }
