@@ -7,6 +7,6 @@
     "typecheck": "echo 'No TypeScript source files to check'"
   },
   "devDependencies": {
-    "prisma": "7.5.0"
+    "prisma": "7.6.0"
   }
 }
