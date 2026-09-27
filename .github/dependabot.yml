@@ -1,19 +1,22 @@
+# Version updates disabled (open-pull-requests-limit: 0): repo is dormant.
+# Dependabot security updates are unaffected; they use a separate internal limit.
+# BRO-2600
 version: 2
 updates:
 
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
+    open-pull-requests-limit: 0
     directory: "/"
-    open-pull-requests-limit: 10
     schedule:
       interval: "monthly"
 
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
+    open-pull-requests-limit: 0
     directories:
       - "/"
       - "/apps/*"
       - "/packages/*"
-    open-pull-requests-limit: 10
     schedule:
       interval: "monthly"
